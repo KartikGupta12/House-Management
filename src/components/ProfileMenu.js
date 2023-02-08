@@ -10,7 +10,7 @@ function ProfileMenu(props) {
             </button>
             <ul className="dropdown-menu">
                 <li><a className="dropdown-item" href="#">Settings</a></li>
-                <li><a className="dropdown-item" href="#">Logout</a></li>
+                <li><span className="dropdown-item" role="button">Logout</span></li>
             </ul>
         </div>
     );
