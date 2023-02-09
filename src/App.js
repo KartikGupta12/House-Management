@@ -4,7 +4,10 @@ import Home from "./components/Home";
 import EnterProducts from "./components/EnterProducts";
 import Graphs from "./components/Graphs";
 import ProductRecommendation from "./components/ProductRecommendation";
-
+import Login from "./components/Login";
+import Register from "./components/Register";
+import "./CSS/Login.css"
+import "./CSS/Navbar.css"
 function App() {
     return (
         <>
@@ -15,6 +18,8 @@ function App() {
                         <Route path="/EnterProducts" element={<EnterProducts/>}/>
                         <Route path="/Graphs" element={<Graphs/>}/>
                         <Route path="/ProductRecommendation" element={<ProductRecommendation/>}/>
+                        <Route path="/login" element={<Login/>}/>
+                        <Route path="/register" element={<Register/>}/>
                     </Route>
                 </Routes>
             </BrowserRouter>

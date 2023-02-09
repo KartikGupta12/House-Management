@@ -1,0 +1,15 @@
+.tab-content {
+    width: 50%;
+    margin: auto;
+}
+
+.nav-pills{
+    width: 50%;
+    margin: 15vh auto;
+}
+
+@media screen and (width < 990px) {
+    .tab-content, .nav-pills{
+        width: 80%;
+    }
+}

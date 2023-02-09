@@ -1,9 +1,8 @@
 import React from "react";
-import "../CSS/Navbar.css";
 import ProfileMenu from "./ProfileMenu";
 import {Link, Outlet, useLocation} from "react-router-dom";
 
-export default function Navbar(props) {
+export default function Navbar() {
     const location = useLocation();
     return (
         <>
