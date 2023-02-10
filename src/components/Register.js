@@ -3,47 +3,43 @@ import LoginRegisterNavbar from "./LoginRegisterNavbar";
 
 function Register() {
     return (
-        <>
-            <LoginRegisterNavbar/>
-            <div className="tab-content">
-                <div className="tab-pane active">
-                    <form>
-                        {/*Name input */}
-                        <div className="form-outline mb-4">
-                            <input type="text" id="registerName" className="form-control"/>
-                            <label className="form-label" htmlFor="registerName">Name</label>
-                        </div>
+        <div className="loginContainer">
+            <div className="image">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
+                     className="img-fluid" alt="Sample image"/>
+            </div>
+            <div className="register">
+                <LoginRegisterNavbar/>
+                <div className="tab-content">
+                    <div className="tab-pane active">
+                        <form>
+                            {/*Email input*/}
+                            <div className="form-floating mb-3">
+                                <input type="text" className="form-control" id="floatingInput"
+                                       placeholder="Email address"/>
+                                <label htmlFor="floatingInput">Email address</label>
+                            </div>
 
-                        {/*Username input */}
-                        <div className="form-outline mb-4">
-                            <input type="text" id="registerUsername" className="form-control"/>
-                            <label className="form-label" htmlFor="registerUsername">Username</label>
-                        </div>
+                            {/*Password input*/}
+                            <div className="form-floating mb-3">
+                                <input type="password" className="form-control" id="floatingPassword"
+                                       placeholder="Password"/>
+                                <label htmlFor="floatingPassword">Password</label>
+                            </div>
 
-                        {/*Email input */}
-                        <div className="form-outline mb-4">
-                            <input type="email" id="registerEmail" className="form-control"/>
-                            <label className="form-label" htmlFor="registerEmail">Email</label>
-                        </div>
+                            {/*Repeat Password input*/}
+                            <div className="form-floating mb-3">
+                                <input type="password" className="form-control" id="rPassword" placeholder="Password"/>
+                                <label htmlFor="rPassword">Repeat Password</label>
+                            </div>
 
-                        {/*Password input */}
-                        <div className="form-outline mb-4">
-                            <input type="password" id="registerPassword" className="form-control"/>
-                            <label className="form-label" htmlFor="registerPassword">Password</label>
-                        </div>
-
-                        {/*Repeat Password input*/}
-                        <div className="form-outline mb-4">
-                            <input type="password" id="registerRepeatPassword" className="form-control"/>
-                            <label className="form-label" htmlFor="registerRepeatPassword">Repeat password</label>
-                        </div>
-
-                        {/*Submit button */}
-                        <button type="submit" className="btn btn-primary btn-block mb-3">Sign in</button>
-                    </form>
+                            {/*Submit button */}
+                            <button type="submit" className="btn btn-primary btn-block mb-3">Register</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 
