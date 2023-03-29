@@ -8,6 +8,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import "./CSS/Login.css"
 import "./CSS/Navbar.css"
+import "./CSS/EnterProduct.css"
 function App() {
     return (
         <>
