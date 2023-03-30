@@ -10,7 +10,7 @@ mongoose.connect(database_link)
     console.log('User Database Successfully Connected');
 })
 .catch(function(err){
-    console.log('User Database Error',err);
+    console.log('User Database Connection Error',err);
 })
 
 
@@ -30,14 +30,13 @@ const userSchema = mongoose.Schema({
     password:{
         type: String,
         required: true,
-        minLength: 8
+        minLength: [8 , "Password Length Must be Greater than or equal to 8"]
     },
     confirmPassword:{
         type: String,
-        minLength: 8,
-        validate: function(){
+        validate: [function(){
             return this.confirmPassword==this.password;
-        }
+        }, "Confirm Password Does Not Match The Original Password" ]
     },
 });
 
