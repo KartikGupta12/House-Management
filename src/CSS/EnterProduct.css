@@ -1,18 +1,23 @@
-.form1{
-    margin-left:35%;
-    margin-right:35%;
+.form1 {
     margin-top: 2%;
-    margin-bottom:auto;
-    background-color:rgb(79, 77, 77); 
+    margin-bottom: auto;
+    background-color: rgb(79, 77, 77);
     color: white;
-    padding:5px 60px;
+    padding: 5px 75px;
     border-radius: 10px;
 }
-.button1{
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button1 {
     width: 100%;
     height: 50px;
-    padding:10px;
-    border:none;
+    padding: 10px;
+    border: none;
     background-color: rebeccapurple;
     color: white;
     border-radius: 5px;

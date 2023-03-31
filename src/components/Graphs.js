@@ -1,6 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import { useNavigate } from "react-router-dom";
+function Graphs() {
+    const history = useNavigate();
+    useEffect(() => {
+        if(!localStorage.getItem('authToken'))
+            history('/login');
+    }, []);
 
-function Graphs(props) {
     return (
         <div>Graphs</div>
     );

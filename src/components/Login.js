@@ -1,8 +1,29 @@
-import React from 'react';
+import React, {useState} from 'react';
 import LoginRegisterNavbar from "./LoginRegisterNavbar";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 function Login() {
+    const history = useNavigate();
+    const server = "http://localhost:8000/";
+    const [data, setData] = useState({email: "", password: ""});
+    const handleChange = (event) => {
+        setData({
+            ...data,
+            [event.target.name]: event.target.value
+        });
+    };
+    const  handleSubmit = async (event) => {
+        let res = await fetch(server + 'user/login', {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        let jsonData = await res.json();
+        localStorage.setItem('authToken', jsonData['authToken']);
+        history('/');
+    };
     return (
         <div className="loginContainer">
             <div className="image">
@@ -15,16 +36,16 @@ function Login() {
                         <form>
                             {/*Email input*/}
                             <div className="form-floating mb-3">
-                                <input type="text" className="form-control" id="floatingInput"
-                                       placeholder="Email address"/>
-                                <label htmlFor="floatingInput">Email address</label>
+                                <input type="text" className="form-control" id="email"
+                                       onChange={handleChange} placeholder="Email address" name="email"/>
+                                <label htmlFor="email">Email address</label>
                             </div>
 
                             {/*Password input*/}
                             <div className="form-floating">
-                                <input type="password" className="form-control" id="floatingPassword"
-                                       placeholder="Password"/>
-                                <label htmlFor="floatingPassword">Password</label>
+                                <input type="password" className="form-control" id="password"
+                                       onChange={handleChange} placeholder="Password" name="password"/>
+                                <label htmlFor="password">Password</label>
                             </div>
 
                             <div className="row mb-4">
@@ -34,7 +55,7 @@ function Login() {
                             </div>
 
                             {/*Submit button */}
-                            <button type="submit" className="btn btn-primary btn-block mb-4">Sign in</button>
+                            <button type="button" onClick={handleSubmit} className="btn btn-primary btn-block mb-4">Sign in</button>
 
                             {/*Register buttons */}
                             <div className="text-center">
