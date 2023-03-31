@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
-function EnterProducts(props) {
+function EnterProducts() {
     const history = useNavigate();
     useEffect(() => {
         if(!localStorage.getItem('authToken'))

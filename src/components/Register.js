@@ -10,7 +10,7 @@ function Register() {
             [event.target.name]: event.target.value
         });
     };
-    const  handleSubmit = async (event) => {
+    const  handleSubmit = async () => {
         let res = await fetch(server + 'user/signup', {
             method: "POST",
             body: JSON.stringify(data),

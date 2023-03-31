@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useNavigate} from "react-router-dom";
 
-function ProductRecommendation(props) {
+function ProductRecommendation() {
     const history = useNavigate();
     useEffect(() => {
         if(!localStorage.getItem('authToken'))

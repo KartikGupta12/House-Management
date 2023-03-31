@@ -12,7 +12,7 @@ function Login() {
             [event.target.name]: event.target.value
         });
     };
-    const  handleSubmit = async (event) => {
+    const  handleSubmit = async () => {
         let res = await fetch(server + 'user/login', {
             method: "POST",
             body: JSON.stringify(data),
