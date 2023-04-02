@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
+
 function EnterProducts() {
+
     const history = useNavigate();
-    useEffect(() => {
-        if(!localStorage.getItem('authToken'))
-            history('/login');
-    }, []);
+
+    // All use States
     const [details, setDetail] = useState({
         category: "",
         product_name: "",
@@ -15,116 +15,145 @@ function EnterProducts() {
         Remaining_quantity: ""
     });
     const [products, setProducts] = useState([]);
-    const [unit,setUnit] = useState([]);
+    const [unit, setUnit] = useState("");
     const [categories, setCategories] = useState([]);
-    const onchange = (e) => {
-        console.log(e.target.name);
-        console.log(e.target.value);
+
+    const onValueChange = (e) => {
         setDetail({...details, [e.target.name]: e.target.value});
     }
-    const handlechange = (e) => {
+
+    const onCategorySelect = (e) => {
+        setDetail({...details, [e.target.name]: e.target.value});
         const temp = categories.filter(x => x.category === e.target.value);
         setProducts(temp[0].items);
     }
-    const onhandlechangeporduct = (e) => {
-        const temp=products.filter(x=>x.name===e.target.value);
+
+    const onProductSelect = (e) => {
+        setDetail({...details, [e.target.name]: e.target.value});
+        const temp = products.filter(x => x.name === e.target.value);
         setUnit(temp[0].unit);
     }
+
     const fetchData = async () => {
         try {
             let response = await fetch("http://localhost:8000/getAllItems");
             let json = await response.json();
-            setCategories(json.Items);
+            setCategories(json['Items']);
         } catch (error) {
             console.log(error);
         }
     };
-    useEffect(() => {
-        fetchData();
-    }, []);
-    const onsubmit = async (e) => {
+
+    const onDataSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const response = await fetch("http://localhost:5000/enterProduct", {
-                method: "POST",
-                headers: {
-                    'content-Type': 'application/json',
-                    'auth-token': localStorage.getItem('token')
-                },
-                body: JSON.stringify({
-                    category: details.category,
-                    brand: details.brand,
-                    price: details.price,
-                    name: details.product_name,
-                    newQuantity: details.Quantity,
-                    RemainingQuantity: details.Remaining_quantity
-                })
-            });
-            if (response.status === 200) {
-                window.alert("Product entered successfully");
-            }
-
-        } catch (error) {
-            console.log(error);
-        }
-        setDetail({category: "", product_name: "", brand: "", Price: "", Quantity: "", Remaining_quantity: ""});
+        console.log(details);
+        // try {
+        //     const response = await fetch("http://localhost:5000/enterProduct", {
+        //         method: "POST",
+        //         headers: {
+        //             'content-Type': 'application/json',
+        //             'auth-token': localStorage.getItem('token')
+        //         },
+        //         body: JSON.stringify({
+        //             category: details.category,
+        //             brand: details.brand,
+        //             price: details.price,
+        //             name: details.product_name,
+        //             newQuantity: details.Quantity,
+        //             RemainingQuantity: details.Remaining_quantity
+        //         })
+        //     });
+        //     if (response.status === 200) {
+        //         window.alert("Product entered successfully");
+        //     }
+        //
+        // } catch (error) {
+        //     console.log(error);
+        // }
+        setDetail({
+            category: "Fruits",
+            product_name: "",
+            brand: "",
+            Price: "",
+            Quantity: "",
+            Remaining_quantity: ""
+        })
     }
+    useEffect(() => {
+        if (!localStorage.getItem('authToken'))
+            history('/login');
+        fetchData().then(() => {});
+
+    });
+
     return (
-        <>
-            <div className='form-container'>
-                <form className='form1' onSubmit={onsubmit}>
-                    <div className="mb-3">
-                        <label htmlFor="exampleInputPassword1" className="form-label"><h5>Category</h5></label>
-                        <select onChange={handlechange} className="form-select" aria-label="Default select example"
-                                name="category">
-                            <option value="" disabled selected>Select your option</option>
-                            {
-                                categories.map((data, index) => {
-                                    return (
-                                        <option value={data.category} key={index}>{data.category}</option>)
-                                })
-                            }
-                        </select>
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="exampleInputPassword1" className="form-label"><h5>Products</h5></label>
-                        <select onChange={onhandlechangeporduct} className="form-select" aria-label="Default select example" name="prdouct_name">
-                            <option value="" disabled selected>Select your option</option>
-                            {
-                                products.map((data, index) => {
-                                    return (
-                                        <option value={data.name} key={index}>{data.name}</option>)
-                                })
-                            }
-                        </select>
-                    </div>
-                    <div className="form-group mb-3">
-                        <label><h5>Quantity</h5></label>
-                        <input type="text" name="Quantity" value={details.Quantity} onChange={onchange}
-                           placeholder={unit}    className="form-control"/>
-                    </div>
+        <div className='form-container'>
+            <form className="EnterProduct-Form">
+                {/*Select Category*/}
+                <div className="form-floating mb-3">
+                    <select onChange={onCategorySelect} id="category" className="form-select" name="category">
+                        <option disabled selected>Select Category</option>
+                        {
+                            categories.map((data, index) =>
+                                <option value={data.category} key={index}>{data.category}</option>)
+                        }
+                    </select>
+                    <label htmlFor="category">Category</label>
+                </div>
 
-                    <div className="form-group mb-3">
-                        <label><h5>Brand</h5></label>
-                        <input type="text" name="brand" value={details.brand} onChange={onchange}
-                               className="form-control"/>
-                    </div>
+                {/*Select Product*/}
+                <div className="form-floating mb-3">
+                    <select onChange={onProductSelect} id="product" className="form-select" name="product_name">
+                        <option disabled selected>Select Product</option>
+                        {
+                            products.map((data, index) => <option value={data.name} key={index}> {data.name} </option>)
+                        }
+                    </select>
+                    <label htmlFor="product">Products</label>
+                </div>
 
-                    <div className="form-group mb-3">
-                        <label><h5>Price</h5></label>
-                        <input type="text" name="Price" value={details.Price} onChange={onchange}
-                               className="form-control"/>
-                    </div>
+                {/*Enter Quantity*/}
+                <div className="form-floating mb-3">
+                    <input type="text" name="Quantity" id="quantity" placeholder='Not Used' onChange={onValueChange}
+                           value={details.Quantity}
+                           className="form-control"/>
+                    <label htmlFor="quantity">Quantity in {unit}</label>
+                </div>
 
-                    <div className="form-group mb-3">
-                        <label><h5>Remaining Quantity</h5></label>
-                        <input type="text" name="Remaining_quantity" value={details.Remaining_quantity}
-                               onChange={onchange} className="form-control" placeholder='Qunatity left in Home'/>
-                    </div>
-                    <button type="submit" className="button1">Submit</button>
-                </form>
+                {/*Enter Brand*/}
+                <div className="form-floating mb-3">
+                    <input type="text" name="brand" id="brand" placeholder='Not Used' value={details.brand}
+                           onChange={onValueChange}
+                           className="form-control"/>
+                    <label htmlFor="brand">Brand</label>
+                </div>
+
+                {/*Enter Price*/}
+                <div className="form-floating mb-3">
+                    <input type="text" name="Price" id="price" placeholder="Not Used" value={details.Price}
+                           onChange={onValueChange}
+                           className="form-control"/>
+                    <label htmlFor="price">Price</label>
+                </div>
+
+                {/*Enter Remaining Quantity*/}
+                <div className="form-floating mb-3">
+                    <input type="text" name="Remaining_quantity" id="remain" value={details.Remaining_quantity}
+                           onChange={onValueChange} className="form-control" placeholder='Qunatity left in Home'/>
+                    <label htmlFor="remain">Remaining Quantity</label>
+                </div>
+
+                {/*Submit Details*/}
+                <button type="button" onClick={onDataSubmit} className="btn btn-primary btn-block mb-4">Submit Details</button>
+
+            </form>
+
+            <div className='GIFS'>
+                <img src={require(`../assets/${details.category || 'Fruits'}.gif`)} />
             </div>
-        </>
+        </div>
+
     );
 }
+
 export default EnterProducts;

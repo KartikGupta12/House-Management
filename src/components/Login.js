@@ -1,8 +1,11 @@
-import React, {useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import LoginRegisterNavbar from "./LoginRegisterNavbar";
 import {Link, useNavigate} from "react-router-dom";
+import UserContext from "../context/UserContext";
 
 function Login() {
+    const context = useContext(UserContext);
+    const {showAlert} = context;
     const history = useNavigate();
     const server = "http://localhost:8000/";
     const [data, setData] = useState({email: "", password: ""});
@@ -13,17 +16,34 @@ function Login() {
         });
     };
     const  handleSubmit = async () => {
-        let res = await fetch(server + 'user/login', {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: {
-                "Content-Type": "application/json"
+        try {
+            let res = await fetch(server + 'user/login', {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            let jsonData = await res.json();
+            if (jsonData['authToken']) {
+                localStorage.setItem('authToken', jsonData['authToken']);
+                showAlert('Login successfully', "success");
+                history('/');
+            } else {
+                showAlert('Invalid Credentials', 'danger');
             }
-        });
-        let jsonData = await res.json();
-        localStorage.setItem('authToken', jsonData['authToken']);
-        history('/');
+        } catch (err) {
+            showAlert("Internal Server Error: Try again after some time", "danger");
+        }
     };
+    useEffect(()=>{
+        const keyDownHandler = event => {
+            if(event.code === 'Enter' || event.code === 'NumpadEnter'){
+                handleSubmit().then(()=>{});
+            }
+        };
+        document.addEventListener('keydown', keyDownHandler);
+    });
     return (
         <div className="loginContainer">
             <div className="image">

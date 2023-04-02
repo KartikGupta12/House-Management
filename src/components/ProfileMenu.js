@@ -5,8 +5,8 @@ import UserContext from "../context/UserContext";
 
 function ProfileMenu() {
     const context = useContext(UserContext);
-    const history = useNavigate();
     const {showAlert} = context;
+    const history = useNavigate();
     const handleClick = () => {
         localStorage.removeItem('authToken');
         showAlert('Logged out successfully', 'success');

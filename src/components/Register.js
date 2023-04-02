@@ -1,24 +1,39 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import LoginRegisterNavbar from "./LoginRegisterNavbar";
+import UserContext from "../context/UserContext";
+import {useNavigate} from "react-router-dom";
 
 function Register() {
+    const context = useContext(UserContext);
+    const {showAlert} = context;
+    const history = useNavigate();
     const server = "http://localhost:8000/";
-    const [data, setData] = useState({ name:"", email: "", password: "", confirmPassword: ""});
+    const [data, setData] = useState({name: "", email: "", password: "", confirmPassword: ""});
     const handleChange = (event) => {
         setData({
             ...data,
             [event.target.name]: event.target.value
         });
     };
-    const  handleSubmit = async () => {
-        let res = await fetch(server + 'user/signup', {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: {
-                "Content-Type": "application/json"
+    const handleSubmit = async () => {
+        try {
+            let res = await fetch(server + 'user/signup', {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            const da = await res.json();
+            if (da.Data) {
+                showAlert('Register successfully now please log in', "success");
+                history('/login');
+            } else {
+                showAlert('Error While Register', "danger");
             }
-        });
-        await res.json();
+        } catch (err) {
+            showAlert("Internal Server Error: Try again after some time", "danger");
+        }
     };
 
 
@@ -57,12 +72,14 @@ function Register() {
                             {/*Repeat Password input*/}
                             <div className="form-floating mb-3">
                                 <input type="password" className="form-control" id="confirmPassword"
-                                       onChange={handleChange} placeholder="Password"  name="confirmPassword"/>
+                                       onChange={handleChange} placeholder="Password" name="confirmPassword"/>
                                 <label htmlFor="confirmPassword">Repeat Password</label>
                             </div>
 
                             {/*Submit button */}
-                            <button onClick={handleSubmit} type="button" className="btn btn-primary btn-block mb-3">Register</button>
+                            <button onClick={handleSubmit} type="button"
+                                    className="btn btn-primary btn-block mb-3">Register
+                            </button>
                         </form>
                     </div>
                 </div>
