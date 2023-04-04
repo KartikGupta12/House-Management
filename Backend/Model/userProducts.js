@@ -17,17 +17,20 @@ const productSchema = mongoose.Schema({
     user:{
         type: mongoose.Schema.ObjectId,
         ref: 'userModel',
-        // required: [true,"User Must Exist"]
+        required: [true,"User Must Exist"]
     },
     year:{
         type:Number
     },
     month:{
+        type:String
+    },
+    date:{
         type:Number
     },
     name:{
         type: String,
-        required: true
+        required: [true,"Product Name is Required"]
     },
     category:{
         type: String
@@ -45,9 +48,6 @@ const productSchema = mongoose.Schema({
     newQuantity:{
         type: Number,
         required: true
-    },
-    averageUsage:{
-        type: Number
     }
 });
 
@@ -59,6 +59,5 @@ productSchema.pre(/^find/, function(next){
     next();
 });
 
-const productModel ={};
-//  mongoose.model('productModel',productSchema);
+const productModel = mongoose.model('productModel',productSchema);
 module.exports = productModel;

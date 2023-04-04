@@ -85,7 +85,7 @@ module.exports.logout = function logout(req,res){
 }
 
 module.exports.isLoggedIn = async function isLoggedIn(req,res){
-    const user = await userModel.findById(req.id);
+    const user = await userModel.findById(req.body.user);
     return res.json({
         "Message" : " User Is Logged In",
         "authToken" : req.body.authToken,
@@ -100,7 +100,7 @@ module.exports.protectRoute = async function protectRoute(req,res,next){
             let payload=jwt.verify(token,JWT_key);
             if(payload){
                 const user = await userModel.findById(payload.payload);
-                req.id = user.id;
+                req.body.user= user.id;
                 next();
             }
             else{

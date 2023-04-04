@@ -6,7 +6,7 @@ const itemModel = require('./Model/allProducts');
 var cors = require('cors')
 
 const app=express();
-app.listen(3000);
+app.listen(8000);
 app.use(cors());
 
 app.use(express.json());
