@@ -16,6 +16,7 @@ app.use(cookieParser());
 app.use('/user',userRouter);
 app.use('/product',productRouter);
 
+// Endpoint to get all the products in Database
 app.get('/getAllItems',async (req,res)=>{
     let items = await itemModel.find();
     return res.json({

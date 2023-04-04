@@ -24,109 +24,113 @@ const itemSchema = new mongoose.Schema({
 const itemModel = mongoose.model('itemModel',itemSchema);
 
 // Units Used
-// KG -> Kilogram , GM -> Gram , L -> Litre , ML -> MilliLitre , NO -> Number
+// Kilo-Gram -> Kilogram , Gram -> Gram , L -> Litre , ML -> MilliLitre , NO -> Number
 
 // (async function addItem(){
 //     const cat1 = {
 //         category : "Grocery",
-//         items : [{name : "Rice", unit: "KG"},
-//                 {name : "Wheat Flour", unit: "KG"},
-//                 {name : "Pulse", unit: "KG"},
-//                 {name : "Almond", unit: "KG"},
-//                 {name : "Cashew", unit: "KG"},
-//                 {name : "Oil", unit: "L"},
-//                 {name : "Ghee", unit: "KG"},
-//                 {name : "Masala", unit: "GM"},
-//                 {name : "Salt", unit: "KG"},
-//                 {name : "Sugar", unit: "KG"},
-//                 {name : "Tomato Sauce", unit: "KG"},
-//                 {name : "Dairy", unit: "NO"},
-//                 {name : "Instant Foods", unit: "NO"},
-//                 {name : "Choclate", unit: "NO"},
-//                 {name : "Ice Cream", unit: "GM"},
-//                 {name : "Honey", unit: "KG"},
-//                 {name : "Cereals", unit: "KG"},
-//                 {name : "Tea", unit: "KG"},
-//                 {name : "Coffee", unit: "GM"}]
+//         items : [{name : "Rice", unit: "Kilo-Gram"},
+//                 {name : "Flour", unit: "Kilo-Gram"},
+//                 {name : "Pulse", unit: "Kilo-Gram"},
+//                 {name : "Almond", unit: "Gram"},
+//                 {name : "Cashew", unit: "Gram"},
+//                 {name : "Oil", unit: "Litre"},
+//                 {name : "Masala", unit: "Gram"},
+//                 {name : "Salt", unit: "Kilo-Gram"},
+//                 {name : "Sugar", unit: "Kilo-Gram"},
+//                 {name : "Tomato Sauce", unit: "Kilo-Gram"},
+//                 {name : "Honey", unit: "Kilo-Gram"},
+//                 {name : "Cereals", unit: "Kilo-Gram"},
+//                 {name : "Tea", unit: "Kilo-Gram"},
+//                 {name : "Coffee", unit: "Gram"}]
 //     };
 
 //     const cat2 = {
-//         category : "Bath, Body and Hair",
-//         items : [{name : "Shampoo", unit: "ML"},
-//                 {name : "Conditioner", unit: "ML"},
-//                 {name : "Soaps", unit: "NO"},
-//                 {name : "Face Wash", unit: "ML"},
-//                 {name : "Perfume", unit: "NO"},
-//                 {name : "Deodorant", unit: "NO"},
-//                 {name : "Talcum Powder", unit: "GM"},
-//                 {name : "Hair Oil", unit: "ML"},
-//                 {name : "Body Lotion", unit: "ML"}]
+//         category : "Grooming Products",
+//         items : [{name : "Shampoo", unit: "Milli-Litre"},
+//                 {name : "Conditioner", unit: "Milli-Litre"},
+//                 {name : "Soaps", unit: "Number"},
+//                 {name : "Face Wash", unit: "Milli-Litre"},
+//                 {name : "Perfume", unit: "Number"},
+//                 {name : "Deodorant", unit: "Number"},
+//                 {name : "Talcum Powder", unit: "Gram"},
+//                 {name : "Hair Oil", unit: "Milli-Litre"},
+//                 {name : "Body Lotion", unit: "Milli-Litre"}]
 //     };
 
 //     const cat3 = {
 //         category : "Cleaning",
-//         items : [{name : "Detergent Powder", unit: "KG"},
-//                 {name : "Surface Cleaners", unit: "ML"},
-//                 {name : "Utensils Cleaners", unit: "NO"},
-//                 {name : "Toilet Cleaners", unit: "ML"},
-//                 {name : "Handwash", unit: "ML"}]
+//         items : [{name : "Detergent Powder", unit: "Kilo-Gram"},
+//                 {name : "Surface Cleaners", unit: "Milli-Litre"},
+//                 {name : "Utensil Cleaners", unit: "Number"},
+//                 {name : "Toilet Cleaners", unit: "Milli-Litre"},
+//                 {name : "Handwash", unit: "Milli-Litre"}]
 //     };
 
 //     const cat4 = {
-//         category : "Snacks",
-//         items : [{name : "Chips", unit: "NO"},
-//                 {name : "Kurkure", unit: "NO"},
-//                 {name : "Bhujiya", unit: "KG"},
-//                 {name : "Nachos", unit: "NO"},
-//                 {name : "Makhana", unit: "GM"},
-//                 {name : "Soya Sticks", unit: "NO"},
-//                 {name : "Popcorn", unit: "NO"},
-//                 {name : "Cold Drink", unit: "ML"},
-//                 {name : "Juices", unit: "ML"},
-//                 {name : "Energy Drink", unit: "ML"},
-//                 {name : "Nutella", unit: "GM"}]
+//         category : "Snacks/Instant-Foods",
+//         items : [{name : "Chips", unit: "Number"},
+//                 {name : "Kurkure", unit: "Number"},
+//                 {name : "Bhujiya", unit: "Kilo-Gram"},
+//                 {name : "Nachos", unit: "Number"},
+//                 {name : "Makhana", unit: "Gram"},
+//                 {name : "Soya Sticks", unit: "Number"},
+//                 {name : "Popcorn", unit: "Number"},
+//                 {name : "Cold Drink", unit: "Milli-Litre"},
+//                 {name : "Juices", unit: "Milli-Litre"},
+//                 {name : "Energy Drink", unit: "Milli-Litre"},
+//                 {name : "Nutella", unit: "Gram"}]
 //     };
 
 //     const cat5 = {
 //         category : "Vegetables",
-//         items : [{name : "Onion", unit: "KG"},
-//                 {name : "Potato", unit: "KG"},
-//                 {name : "Tomato", unit: "KG"},
-//                 {name : "Coriander", unit: "GM"},
-//                 {name : "Green Chilli", unit: "GM"},
-//                 {name : "Broccoli", unit: "KG"},
-//                 {name : "Carrot", unit: "KG"},
-//                 {name : "Cauliflower", unit: "KG"},
-//                 {name : "Cabbage", unit: "KG"},
-//                 {name : "Lady Finger", unit: "KG"},
-//                 {name : "Capsicum", unit: "GM"},
-//                 {name : "Cabbage", unit: "KG"},
-//                 {name : "Peas", unit: "KG"},
-//                 {name : "Spinach", unit: "KG"},
-//                 {name : "Cucumber", unit: "KG"},
-//                 {name : "Ginger", unit: "GM"},
-//                 {name : "Garlic", unit: "GM"},
-//                 {name : "Lemon", unit: "NO"}]
+//         items : [{name : "Onion", unit: "Kilo-Gram"},
+//                 {name : "Potato", unit: "Kilo-Gram"},
+//                 {name : "Tomato", unit: "Kilo-Gram"},
+//                 {name : "Coriander", unit: "Gram"},
+//                 {name : "Green Chilli", unit: "Gram"},
+//                 {name : "Broccoli", unit: "Kilo-Gram"},
+//                 {name : "Carrot", unit: "Kilo-Gram"},
+//                 {name : "Cauliflower", unit: "Kilo-Gram"},
+//                 {name : "Cabbage", unit: "Kilo-Gram"},
+//                 {name : "Lady Finger", unit: "Kilo-Gram"},
+//                 {name : "Capsicum", unit: "Kilo-Gram"},
+//                 {name : "Peas", unit: "Kilo-Gram"},
+//                 {name : "Spinach", unit: "Kilo-Gram"},
+//                 {name : "Cucumber", unit: "Kilo-Gram"},
+//                 {name : "Ginger", unit: "Gram"},
+//                 {name : "Garlic", unit: "Gram"},
+//                 {name : "Lemon", unit: "Number"}]
 //     };
 
 //     const cat6 = {
 //         category : "Fruits",
-//         items : [{name : "Coconut", unit: "NO"},
-//                 {name : "Grapes", unit: "KG"},
-//                 {name : "Orange", unit: "KG"},
-//                 {name : "Banana", unit: "KG"},
-//                 {name : "Watermelon", unit: "KG"},
-//                 {name : "Mango", unit: "KG"},
-//                 {name : "Apple", unit: "KG"},
-//                 {name : "Pomegranate", unit: "KG"},
-//                 {name : "Guava", unit: "KG"},
-//                 {name : "Chikoo", unit: "KG"},
-//                 {name : "Lichi", unit: "KG"},
-//                 {name : "Papaya", unit: "KG"},
-//                 {name : "Pineapple", unit: "KG"}]
+//         items : [{name : "Coconut", unit: "Number"},
+//                 {name : "Grapes", unit: "Kilo-Gram"},
+//                 {name : "Orange", unit: "Kilo-Gram"},
+//                 {name : "Banana", unit: "Kilo-Gram"},
+//                 {name : "Watermelon", unit: "Kilo-Gram"},
+//                 {name : "Mango", unit: "Kilo-Gram"},
+//                 {name : "Apple", unit: "Kilo-Gram"},
+//                 {name : "Pomegranate", unit: "Kilo-Gram"},
+//                 {name : "Guava", unit: "Kilo-Gram"},
+//                 {name : "Chikoo", unit: "Kilo-Gram"},
+//                 {name : "Lichi", unit: "Kilo-Gram"},
+//                 {name : "Papaya", unit: "Kilo-Gram"},
+//                 {name : "Pineapple", unit: "Kilo-Gram"}]
 //     };
-
-//     let addedItem = await itemModel.create(cat6);
+//     const cat7 = {
+//         category : "Dairy Products",
+//         items : [
+//                 {name : "Ghee", unit: "Kilo-Gram"},
+//                 {name : "Milk", unit: "Litre"},
+//                 {name : "Cheese", unit: "Gram"},
+//                 {name : "Butter", unit: "Gram"},
+//                 {name : "Panneer", unit: "Gram"},
+//                 {name : "Choclate", unit: "Number"},
+//                 {name : "Ice Cream", unit: "Gram"}]
+//     };
+//     let addedItem = await itemModel.create(cat3);
 //     console.log("Item created", addedItem);
 // })();
 module.exports = itemModel;

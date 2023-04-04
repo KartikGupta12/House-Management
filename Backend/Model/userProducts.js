@@ -59,5 +59,6 @@ productSchema.pre(/^find/, function(next){
     next();
 });
 
-const productModel = mongoose.model('productModel',productSchema);
+const productModel ={};
+//  mongoose.model('productModel',productSchema);
 module.exports = productModel;

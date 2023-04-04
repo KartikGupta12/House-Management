@@ -34,15 +34,13 @@ module.exports.login = async function login(req,res){
             const foundUser = await userModel.findOne({email:userData.email});
         
             if(foundUser){
-
                 if(foundUser.password==userData.password){
                     let uid = foundUser['_id'];      // JWT uid
                     let jwt_token = jwt.sign({payload:uid},JWT_key);
-                    res.cookie('login_jwt',jwt_token,{httpOnly:true});
-                    
                     return res.json({
                         Message:'User Logged In',
-                        UserDetails:userData
+                        UserDetails:userData,
+                        authToken: jwt_token
                     });
                 }
                 else{
@@ -82,6 +80,45 @@ module.exports.logout = function logout(req,res){
     else{
         return res.json({
             Message:"Login First to Logout"
+        });
+    }
+}
+
+module.exports.isLoggedIn = async function isLoggedIn(req,res){
+    const user = await userModel.findById(req.id);
+    return res.json({
+        "Message" : " User Is Logged In",
+        "authToken" : req.body.authToken,
+        "User" : user
+    });
+}
+
+module.exports.protectRoute = async function protectRoute(req,res,next){
+    try{
+        if(req.body.authToken){
+            let token=req.body.authToken;
+            let payload=jwt.verify(token,JWT_key);
+            if(payload){
+                const user = await userModel.findById(payload.payload);
+                req.id = user.id;
+                next();
+            }
+            else{
+                return res.json({
+                    Message:"Wrong auth Token"
+                });
+            }
+        }
+        else{
+            return res.json({
+                Message:"Missing auth Token"
+            });
+        }
+    }
+    catch(err){
+        res.json({
+            Message: err.message,
+            Location: "authController"
         });
     }
 }

@@ -1,15 +1,11 @@
 const express = require('express');
-const {signup,login,logout} = require('../Controller/authController');
-
+const {signup,login,logout,isLoggedIn,protectRoute} = require('../Controller/authController');
 
 const userRouter=express.Router();
 
-
+// Check if user is logged in
 userRouter.route('/')
-.get((req,res)=>{
-    res.send("Done")
-});
-
+.get(protectRoute,isLoggedIn);
 
 // User SignUp
 userRouter.route('/signup')
@@ -19,11 +15,9 @@ userRouter.route('/signup')
 userRouter.route('/login')
 .post(login);
 
-// Logout User
-userRouter.route('/logout')
-.get(logout);
-
-
+// // Logout User
+// userRouter.route('/logout')
+// .get(logout);
 
 
 module.exports = userRouter;

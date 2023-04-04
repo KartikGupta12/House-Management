@@ -6,12 +6,12 @@ const database_link="mongodb+srv://database_admin:ElDf7JgLLWdyHN8Q@cluster0.vsux
 
 // Connect to mongodb database
 mongoose.connect(database_link)
-.then(function(db){
-    console.log('User Database Successfully Connected');
-})
-.catch(function(err){
-    console.log('User Database Connection Error',err);
-})
+    .then(function(db){
+        console.log('User Database Successfully Connected');
+    })
+    .catch(function(err){
+        console.log('User Database Connection Error',err);
+    })
 
 
 const userSchema = mongoose.Schema({
@@ -45,5 +45,6 @@ userSchema.pre('save',function(){
 });
 
 
-const userModel = mongoose.model('userModel', userSchema);
+const userModel = {};
+//  mongoose.model('userModel', userSchema);
 module.exports = userModel;
