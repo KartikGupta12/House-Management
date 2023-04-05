@@ -4,6 +4,7 @@ import {useState} from "react";
 
 const AlertState = ({children}) => {
     const [alert, setAlert] = useState({show: false, msg: 'this is error', type: 'success'});
+    const [isLogin, setIsLogin] = useState(false);
 
     const showAlert = (msg, type) => {
         setAlert({
@@ -16,11 +17,17 @@ const AlertState = ({children}) => {
         }, 2000);
     }
 
+    const FlipLoginStats = async (stats) => {
+        if (!stats) localStorage.removeItem('authToken');
+        setIsLogin(stats);
+        if (!stats) window.location.href = '/';
+    }
 
     return (
         <UserContext.Provider
             value={{
-                alert, showAlert
+                alert, isLogin,
+                showAlert, FlipLoginStats
             }}>
             {children}
         </UserContext.Provider>

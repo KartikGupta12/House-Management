@@ -1,17 +1,16 @@
 const uri = 'http://localhost:8000/user'
 const check = async (jwt) => {
-    const data = await fetch(uri, {
-        method: 'POST',
-        headers: {
-            'content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            'authToken': `${jwt}`
-        })
-    });
-    const res = await data.json();
-    console.log(res['authToken']);
-    return (res['authToken'] === jwt);
+    try {
+        let data = await fetch(uri, {
+            method: 'GET',
+            headers: {authToken: jwt}
+        });
+        const res = await data.json();
+        return res['User'];
+    } catch (e) {
+        console.log(e);
+        return false;
+    }
 };
 
 export default check;

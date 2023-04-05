@@ -1,12 +1,12 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useContext, useState} from 'react';
 import LoginRegisterNavbar from "./LoginRegisterNavbar";
 import {Link, useNavigate} from "react-router-dom";
 import UserContext from "../context/UserContext";
 
 function Login() {
     const context = useContext(UserContext);
-    const {showAlert} = context;
     const history = useNavigate();
+    const {showAlert, FlipLoginStats} = context;
     const server = "http://localhost:8000/";
     const [data, setData] = useState({email: "", password: ""});
     const handleChange = (event) => {
@@ -15,7 +15,8 @@ function Login() {
             [event.target.name]: event.target.value
         });
     };
-    const  handleSubmit = async () => {
+    const handleSubmit = async () => {
+        console.log('here');
         try {
             let res = await fetch(server + 'user/login', {
                 method: "POST",
@@ -25,30 +26,22 @@ function Login() {
                 }
             });
             let jsonData = await res.json();
-            console.log(jsonData);
             if (jsonData['authToken']) {
                 localStorage.setItem('authToken', jsonData['authToken']);
                 showAlert('Login successfully', "success");
+                FlipLoginStats(true);
                 history('/');
-            } else {
-                showAlert('Invalid Credentials', 'danger');
-            }
+            } else FlipLoginStats(false);
         } catch (err) {
-            showAlert("Internal Server Error: Try again after some time", "danger");
+            console.log('login error: ' + err);
+            FlipLoginStats(false);
         }
     };
-    useEffect(()=>{
-        const keyDownHandler = event => {
-            if(event.code === 'Enter' || event.code === 'NumpadEnter'){
-                handleSubmit().then(()=>{});
-            }
-        };
-        document.addEventListener('keydown', keyDownHandler);
-    });
     return (
         <div className="loginContainer">
             <div className="image">
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" className="img-fluid" alt="Sample image"/>
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                     className="img-fluid" alt="Sample"/>
             </div>
             <div>
                 <LoginRegisterNavbar/>
@@ -76,7 +69,9 @@ function Login() {
                             </div>
 
                             {/*Submit button */}
-                            <button type="button" onClick={handleSubmit} className="btn btn-primary btn-block mb-4">Sign in</button>
+                            <button type="button" onClick={handleSubmit} className="btn btn-primary btn-block mb-4">Sign
+                                in
+                            </button>
 
                             {/*Register buttons */}
                             <div className="text-center">

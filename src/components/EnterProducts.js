@@ -5,9 +5,9 @@ import UserContext from "../context/UserContext";
 
 function EnterProducts() {
     const context = useContext(UserContext);
-    const {showAlert} = context;
+    const {showAlert, FlipLoginStats} = context;
     const history = useNavigate();
-
+    const token = localStorage.getItem('authToken');
     // All use States
     const [details, setDetail] = useState({
         category: "", product_name: "", brand: "", Price: "", Quantity: "", Remaining_quantity: ""
@@ -44,7 +44,6 @@ function EnterProducts() {
 
     const onDataSubmit = async (e) => {
         e.preventDefault();
-        console.log(details);
         // try {
         //     const response = await fetch("http://localhost:5000/enterProduct", {
         //         method: "POST",
@@ -72,11 +71,21 @@ function EnterProducts() {
             category: "", product_name: "", brand: "", Price: "", Quantity: "", Remaining_quantity: ""
         })
     }
+
     useEffect(() => {
-        if (!localStorage.getItem('authToken'))
-            history('/login');
-        fetchData().then(() => {});
-    });
+        if (!token) {
+            FlipLoginStats(false);
+        }
+        check(token).then((res) => {
+            if (!res) {
+                FlipLoginStats(false);
+            } else {
+                FlipLoginStats(true);
+                fetchData().then(() => {
+                });
+            }
+        });
+    }, []);
 
     return (
         <div className='form-container'>

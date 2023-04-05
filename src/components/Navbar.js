@@ -1,10 +1,12 @@
-import React from "react";
+import React, {useContext} from "react";
 import ProfileMenu from "./ProfileMenu";
-
+import UserContext from "../context/UserContext";
 import {Link, Outlet, useLocation} from "react-router-dom";
 import Alert from "./Alert";
 
 export default function Navbar() {
+    const context = useContext(UserContext);
+    const {isLogin} = context;
     const location = useLocation();
     return (
         <div className='Navbar'>
@@ -27,7 +29,7 @@ export default function Navbar() {
                                     Home
                                 </Link>
                             </li>
-                            {localStorage.getItem('authToken') &&
+                            {isLogin &&
                                 <>
                                     <li className="nav-item mx-2">
                                         <Link
@@ -59,7 +61,7 @@ export default function Navbar() {
                     </div>
                 </div>
             </nav>
-                <Alert/>
+            <Alert/>
             <Outlet/>
         </div>
     );

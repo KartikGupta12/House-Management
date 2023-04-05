@@ -1,20 +1,15 @@
 import React, {useContext} from 'react';
 import profilePic from "../assets/profilePic.png";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import UserContext from "../context/UserContext";
 
 function ProfileMenu() {
     const context = useContext(UserContext);
-    const {showAlert} = context;
-    const history = useNavigate();
-    const handleClick = () => {
-        localStorage.removeItem('authToken');
-        showAlert('Logged out successfully', 'success');
-        history('/login');
-    }
+    const {FlipLoginStats, isLogin} = context;
+    const handleClick = () => FlipLoginStats(false);
     return (
         <>
-            {localStorage.getItem('authToken') && <div className="dropdown-center" data-bs-theme="dark">
+            {isLogin && <div className="dropdown-center" data-bs-theme="dark">
                 <button className=" btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
                     <img width="30" className="mx-2" src={profilePic} alt="logo"/>
                     <span className="text-light user-select-none" role="button">Chirag_kalwani</span>
@@ -24,7 +19,7 @@ function ProfileMenu() {
                     <li><span onClick={handleClick} className="dropdown-item" role="button">Logout</span></li>
                 </ul>
             </div>}
-            {!localStorage.getItem('authToken') &&
+            {!isLogin &&
                 <Link to='./login' type="button" className="btn btn-primary btn-block">Log in / Register</Link>
             }
         </>
