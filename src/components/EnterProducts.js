@@ -1,18 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
+import check from "../Controllers/CheckJwt";
+import UserContext from "../context/UserContext";
 
 function EnterProducts() {
-
+    const context = useContext(UserContext);
+    const {showAlert} = context;
     const history = useNavigate();
 
     // All use States
     const [details, setDetail] = useState({
-        category: "",
-        product_name: "",
-        brand: "",
-        Price: "",
-        Quantity: "",
-        Remaining_quantity: ""
+        category: "", product_name: "", brand: "", Price: "", Quantity: "", Remaining_quantity: ""
     });
     const [products, setProducts] = useState([]);
     const [unit, setUnit] = useState("");
@@ -71,19 +69,13 @@ function EnterProducts() {
         //     console.log(error);
         // }
         setDetail({
-            category: "Fruits",
-            product_name: "",
-            brand: "",
-            Price: "",
-            Quantity: "",
-            Remaining_quantity: ""
+            category: "", product_name: "", brand: "", Price: "", Quantity: "", Remaining_quantity: ""
         })
     }
     useEffect(() => {
         if (!localStorage.getItem('authToken'))
             history('/login');
         fetchData().then(() => {});
-
     });
 
     return (
@@ -93,10 +85,8 @@ function EnterProducts() {
                 <div className="form-floating mb-3">
                     <select onChange={onCategorySelect} id="category" className="form-select" name="category">
                         <option disabled selected>Select Category</option>
-                        {
-                            categories.map((data, index) =>
-                                <option value={data.category} key={index}>{data.category}</option>)
-                        }
+                        {categories.map((data, index) => <option value={data.category}
+                                                                 key={index}>{data.category}</option>)}
                     </select>
                     <label htmlFor="category">Category</label>
                 </div>
@@ -105,9 +95,7 @@ function EnterProducts() {
                 <div className="form-floating mb-3">
                     <select onChange={onProductSelect} id="product" className="form-select" name="product_name">
                         <option disabled selected>Select Product</option>
-                        {
-                            products.map((data, index) => <option value={data.name} key={index}> {data.name} </option>)
-                        }
+                        {products.map((data, index) => <option value={data.name} key={index}> {data.name} </option>)}
                     </select>
                     <label htmlFor="product">Products</label>
                 </div>
@@ -144,12 +132,13 @@ function EnterProducts() {
                 </div>
 
                 {/*Submit Details*/}
-                <button type="button" onClick={onDataSubmit} className="btn btn-primary btn-block mb-4">Submit Details</button>
+                <button type="button" onClick={onDataSubmit} className="btn btn-primary btn-block mb-4">Submit Details
+                </button>
 
             </form>
 
             <div className='GIFS'>
-                <img src={require(`../assets/${details.category || 'Fruits'}.gif`)} />
+                <img src={require(`../assets/${details.category || 'Fruits'}.gif`)} alt="GIFS"/>
             </div>
         </div>
 

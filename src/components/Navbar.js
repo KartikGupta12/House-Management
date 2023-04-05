@@ -1,7 +1,8 @@
 import React from "react";
 import ProfileMenu from "./ProfileMenu";
-import Alert from "./Alert"
+
 import {Link, Outlet, useLocation} from "react-router-dom";
+import Alert from "./Alert";
 
 export default function Navbar() {
     const location = useLocation();
@@ -44,22 +45,21 @@ export default function Navbar() {
                                     </li>
                                     <li className="nav-item mx-2">
                                         <Link
-                                            className={"nav-link " + (location.pathname === "/ProductRecommendation" ? "active" : "")}
-                                            to="/ProductRecommendation">
-                                            Product Recommandations
+                                            className={"nav-link " + (location.pathname === "/Inventory" ? "active" : "")}
+                                            to="/Inventory">
+                                            Inventory
                                         </Link>
                                     </li>
                                 </>
                             }
                         </ul>
-
                         <div className="d-flex profileMenu">
                             <ProfileMenu/>
                         </div>
                     </div>
                 </div>
             </nav>
-            <Alert/>
+                <Alert/>
             <Outlet/>
         </div>
     );

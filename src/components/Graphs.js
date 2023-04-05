@@ -1,14 +1,21 @@
-import React, {useEffect} from 'react';
-import { useNavigate } from "react-router-dom";
+import React, {useContext, useEffect} from 'react';
+import {useNavigate} from "react-router-dom";
+import check from "../Controllers/CheckJwt";
+import UserContext from "../context/UserContext";
+
 function Graphs() {
+    const context = useContext(UserContext);
+    const {showAlert} = context;
     const history = useNavigate();
     useEffect(() => {
-        if(!localStorage.getItem('authToken'))
+        if (!localStorage.getItem('authToken') || !check(localStorage.getItem('authToken'))) {
+            showAlert('Please Login', 'danger');
             history('/login');
+        }
     }, []);
 
     return (
-        <div>Graphs</div>
+        <h1>Show Graphs</h1>
     );
 }
 
