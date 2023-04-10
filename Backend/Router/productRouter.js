@@ -8,8 +8,8 @@ productRouter.use(protectRoute);
 
 productRouter.route('/')
 .get(getInventory)
-.post(createProduct);
-
+.post(createProduct)
+.patch(updateProduct);
 
 module.exports = productRouter;
 

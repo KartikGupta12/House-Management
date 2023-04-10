@@ -70,19 +70,19 @@ module.exports.login = async function login(req,res){
     }
 }
 
-module.exports.logout = function logout(req,res){
-    if(req.cookies.login_jwt){
-        res.cookie('login_jwt',' ', {maxAge:1});
-        return res.json({
-            Message:"User Logout Successful"
-        });
-    }
-    else{
-        return res.json({
-            Message:"Login First to Logout"
-        });
-    }
-}
+// module.exports.logout = function logout(req,res){
+//     if(req.cookies.login_jwt){
+//         res.cookie('login_jwt',' ', {maxAge:1});
+//         return res.json({
+//             Message:"User Logout Successful"
+//         });
+//     }
+//     else{
+//         return res.json({
+//             Message:"Login First to Logout"
+//         });
+//     }
+// }
 
 module.exports.isLoggedIn = async function isLoggedIn(req,res){
     const user = await userModel.findById(req.body.user);
@@ -95,8 +95,8 @@ module.exports.isLoggedIn = async function isLoggedIn(req,res){
 
 module.exports.protectRoute = async function protectRoute(req,res,next){
     try{
-        if(req.body.authToken){
-            let token=req.body.authToken;
+        if(req.headers.authtoken){
+            let token=req.headers.authtoken;
             let payload=jwt.verify(token,JWT_key);
             if(payload){
                 const user = await userModel.findById(payload.payload);

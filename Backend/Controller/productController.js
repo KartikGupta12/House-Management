@@ -1,5 +1,6 @@
 const productModel = require('../Model/userProducts');
 const inventoryModel = require('../Model/InventoryModel');
+const itemModel = require('../Model/allProducts');
 
 const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
@@ -99,7 +100,6 @@ module.exports.createProduct = async function createProduct(req,res){
     }
 };
 
-
 module.exports.getInventory = async function getInventory(req,res){
     let user = req.body.user;
     const d = new Date();
@@ -109,6 +109,7 @@ module.exports.getInventory = async function getInventory(req,res){
 
     try{
         let inventoryDetails = await inventoryModel.find({user:user});
+        let allitems = await itemModel.find();
         let finalInventory =[];
         
         for(let x=0;x<inventoryDetails.length;x++){
@@ -118,11 +119,23 @@ module.exports.getInventory = async function getInventory(req,res){
             if(product){
                 productDetails.price = product.price;
             }
-
+            
+            for(y=0;y<allitems.length;y++){
+                if(allitems[y].category==inventoryDetails[x].category){
+                    for(z=0;z<allitems[y].items.length;z++){
+                        if(allitems[y].items[z].name == inventoryDetails[x].name){
+                            productDetails.unit = allitems[y].items[z].unit;
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
             productDetails.name = inventoryDetails[x].name;
             productDetails.category = inventoryDetails[x].category;
             productDetails.avg_usage = 1;
             productDetails.curr_quantity = inventoryDetails[x].currentQuantity;
+            // productDetails.unit = items.inventoryDetails[x].category;
             finalInventory.push(productDetails);
         }
 
@@ -135,6 +148,37 @@ module.exports.getInventory = async function getInventory(req,res){
         return res.json({
             "Error" : err,
             "Location" : "Product Controller"
+        });
+    }
+}
+
+module.exports.updateProduct = async function getInventory(req,res){
+    let name=req.body.name;
+    let currQuantity=req.body.currentQuantity;
+    let user = req.body.user;
+    try{
+        let inventoryDetails = await inventoryModel.findOne({user:user,name:name});
+
+        if(inventoryDetails){
+            inventoryDetails.currentQuantity = currQuantity;
+            inventoryDetails=await inventoryDetails.save();
+
+            return res.json({
+                Message: "Inventory Updated Successfully",
+                Data : inventoryDetails
+            });
+        }
+        else{
+            return res.json({
+                "Error" : "Inventory Details Not Found"
+            });
+        }
+
+    }
+    catch(err){
+        return res.json({
+            Message: "Product Controller",
+            Error: err
         });
     }
 }
