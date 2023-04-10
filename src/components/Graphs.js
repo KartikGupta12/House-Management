@@ -18,7 +18,7 @@ function Graphs() {
             if (!res) FlipLoginStats(false);
             else {
                 FlipLoginStats(true);
-                GetProductsDetails().then(data => {
+                GetProductsDetails(token).then(data => {
                     setSeries([]);
                     setLabels([]);
                     for (const ele of data) {

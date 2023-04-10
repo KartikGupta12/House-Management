@@ -1,5 +1,5 @@
-const token = localStorage.getItem('authToken');
-const fetchData = async () => {
+// const token = localStorage.getItem('authToken');
+const fetchData = async (token) => {
     try {
         let response = await fetch("http://localhost:8000/product", {
             method: 'GET',
@@ -29,8 +29,8 @@ const makeitems = (unique_categories, details) => {
     return items;
 }
 
-async function GetProductsDetails() {
-    let data = await fetchData();
+async function GetProductsDetails(token) {
+    let data = await fetchData(token);
     return makeitems([...new Set(data['Inventory'].map((element) => element.category))], data['Inventory']);
 }
 

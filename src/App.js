@@ -12,7 +12,7 @@ import "./CSS/Login.css"
 import "./CSS/Navbar.css"
 import "./CSS/EnterProduct.css"
 import "./CSS/Home.css"
-
+import "./CSS/Inventory.css"
 function App() {
     return (
         <>
