@@ -14,6 +14,7 @@ import "./CSS/EnterProduct.css"
 import "./CSS/Home.css"
 import "./CSS/Inventory.css"
 import "./CSS/Graph.css"
+import "./CSS/Accordiaon.css"
 function App() {
     return (
         <>
