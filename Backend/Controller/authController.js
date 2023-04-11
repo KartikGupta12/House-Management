@@ -14,14 +14,14 @@ module.exports.signup = async function signup(req,res){
             });
         }
         else{
-            return res.json({
+            return res.status(500).json({
                 Message:"ERROR WHILE SIGNING UP"
             });
         }
     }
     catch(err){
-        return res.json({
-            "Error": err,
+        return res.status(500).json({
+            "Error": err.message,
             "Location": "authController"
         });
     }
@@ -30,6 +30,7 @@ module.exports.signup = async function signup(req,res){
 module.exports.login = async function login(req,res){
     try{
         const userData=req.body;
+
         if(userData.email && userData.password){
             const foundUser = await userModel.findOne({email:userData.email});
         
@@ -39,84 +40,98 @@ module.exports.login = async function login(req,res){
                     let jwt_token = jwt.sign({payload:uid},JWT_key);
                     return res.json({
                         Message:'User Logged In',
-                        UserDetails:userData,
+                        "User" : {
+                            "name":foundUser.name,
+                            "email":foundUser.email
+                        },
                         authToken: jwt_token
                     });
                 }
                 else{
-                    return res.json({
+                    // Password is wrong
+                    return res.status(500).json({
                         Message:"Wrong Password"
                     });
                 }
 
             }
             else{
-                return res.json({
+                // User Details not found in the database
+                return res.status(500).json({
                     Message:"User Not Found"
                 });
             }
         }
         else{
-            return res.json({
+            // Email or password field not found
+            return res.status(500).json({
                 Message:"Empty Fields Found"
             });
         }
     }
     catch(err){
-        return res.json({
-            "Error": err,
+        return res.status(500).json({
+            "Error": err.message,
             "Location": "authController"
         });
     }
 }
 
-// module.exports.logout = function logout(req,res){
-//     if(req.cookies.login_jwt){
-//         res.cookie('login_jwt',' ', {maxAge:1});
-//         return res.json({
-//             Message:"User Logout Successful"
-//         });
-//     }
-//     else{
-//         return res.json({
-//             Message:"Login First to Logout"
-//         });
-//     }
-// }
-
+// Function to check if the user is logged in
 module.exports.isLoggedIn = async function isLoggedIn(req,res){
-    const user = await userModel.findById(req.body.user);
-    return res.json({
-        "Message" : " User Is Logged In",
-        "authToken" : req.body.authToken,
-        "User" : user
-    });
+    try{
+        let userData = await userModel.findById(req.body.user);
+        if(userData){
+            return res.json({
+                "Message" : "User Is Logged In",
+                "authToken" : req.body.authToken,
+                "User" : {
+                    "name":userData.name,
+                    "email":userData.email
+                }
+            });
+        }
+        else{
+            return res.status(500).json({
+                Message:"User Does Not Exists"
+            });
+        }
+    }
+    catch(err){
+        return res.status(500).json({
+            Message: err.message,
+            Location: "authController"
+        });
+    }
 }
 
+// Middle Ware To Verify authToken
 module.exports.protectRoute = async function protectRoute(req,res,next){
     try{
-        if(req.headers.authtoken){
-            let token=req.headers.authtoken;
+        let token=req.headers.authtoken;
+        if(token){  
             let payload=jwt.verify(token,JWT_key);
-            if(payload){
-                const user = await userModel.findById(payload.payload);
+            const user = await userModel.findById(payload.payload);
+
+            if(user){
                 req.body.user= user.id;
                 next();
             }
             else{
-                return res.json({
-                    Message:"Wrong auth Token"
+                return res.status(500).json({
+                    Message:"User Does Not Exists"
                 });
             }
         }
         else{
-            return res.json({
+            // No authtoken found in request header
+            return res.status(500).json({
                 Message:"Missing auth Token"
             });
         }
     }
     catch(err){
-        res.json({
+        return res.status(500).json({
             Message: err.message,
             Location: "authController"
         });

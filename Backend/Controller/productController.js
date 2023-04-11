@@ -4,6 +4,7 @@ const itemModel = require('../Model/allProducts');
 
 const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
+// Function for taking user entry
 module.exports.createProduct = async function createProduct(req,res){
     let productDetails = req.body;
 
@@ -15,34 +16,38 @@ module.exports.createProduct = async function createProduct(req,res){
     // let month="March";
 
     try{
+        // Checking for an existing entry for the current month
         let product = await productModel.findOne({user:productDetails.user, name:name, year:year, month:month});
+        let inventoryDetails = await inventoryModel.findOne({user:productDetails.user, name:name});
+
+        // Updating the information of current product in inventory database
+        if(inventoryDetails){
+            if(productDetails.remainingQuantity >=0){
+                inventoryDetails.currentQuantity = productDetails.remainingQuantity + productDetails.newQuantity;
+            }
+            else{
+                inventoryDetails.currentQuantity += productDetails.newQuantity;
+            }
+            inventoryDetails = await inventoryDetails.save();
+        }
+        else{
+            inventoryDetails ={"user":productDetails.user, "name":productDetails.name, "category":productDetails.category};
+            if(productDetails.remainingQuantity >=0){
+                inventoryDetails.currentQuantity = productDetails.remainingQuantity + productDetails.newQuantity;
+            }
+            else{
+                inventoryDetails.currentQuantity = productDetails.newQuantity;
+            }
+            inventoryDetails = await inventoryModel.create(inventoryDetails);
+        }
+        
         if(product){
             product.date = date;
             product.brand = productDetails.brand;
             product.newQuantity = productDetails.newQuantity;
             product.price += productDetails.price;
             product.totalQuantity += productDetails.newQuantity;
-
-            let inventoryDetails = await inventoryModel.findOne({user:productDetails.user, name:name});
-
-            if(inventoryDetails){
-                if(productDetails.remainingQuantity >=0){
-                    inventoryDetails.currentQuantity = productDetails.remainingQuantity + productDetails.newQuantity;
-                }
-                else{
-                    inventoryDetails.currentQuantity += productDetails.newQuantity;
-                }
-                inventoryDetails = await inventoryDetails.save();
-            }
-            else{
-                inventoryDetails ={};
-                inventoryDetails.currentQuantity = productDetails.remainingQuantity + productDetails.newQuantity;
-                inventoryDetails.user = productDetails.user;
-                inventoryDetails.name = productDetails.name;
-                inventoryDetails.category = productDetails.category;
-                inventoryDetails = await inventoryModel.create(inventoryDetails);
-            }
-
+            
             product = await product.save();
 
             return res.json({
@@ -57,26 +62,7 @@ module.exports.createProduct = async function createProduct(req,res){
             productDetails.year=year;
             productDetails.totalQuantity = productDetails.newQuantity;
 
-            let inventoryDetails = await inventoryModel.findOne({user:productDetails.user, name:name});
-            if(inventoryDetails){
-                if(productDetails.remainingQuantity >=0){
-                    inventoryDetails.currentQuantity = productDetails.remainingQuantity + productDetails.newQuantity;
-                }
-                else{
-                    inventoryDetails.currentQuantity += productDetails.newQuantity;
-                }
-                inventoryDetails = await inventoryDetails.save();
-            }
-            else{
-                inventoryDetails ={};
-                inventoryDetails.currentQuantity = productDetails.remainingQuantity + productDetails.newQuantity;
-                inventoryDetails.user = productDetails.user;
-                inventoryDetails.name = productDetails.name;
-                inventoryDetails.category = productDetails.category;
-                inventoryDetails = await inventoryModel.create(inventoryDetails);
-            }
-
-            createdProduct = await productModel.create(productDetails);
+            const createdProduct = await productModel.create(productDetails);
             
             if(createdProduct){
                 return res.json({
@@ -86,16 +72,16 @@ module.exports.createProduct = async function createProduct(req,res){
                 });
             }
             else{
-                return res.json({
-                    Message:"Product Not Created"
+                return res.status(500).json({
+                    Message:"Product Details could not Saved"
                 });
             }
         }
     }
     catch(err){
-        return res.json({
-            Message: "Product Controller",
-            Error: err
+        return res.status(500).json({
+            Error: err.message,
+            Message: "Product Controller"
         });
     }
 };
@@ -120,6 +106,7 @@ module.exports.getInventory = async function getInventory(req,res){
                 productDetails.price = product.price;
             }
             
+            // Adding Respective units in the object
             for(y=0;y<allitems.length;y++){
                 if(allitems[y].category==inventoryDetails[x].category){
                     for(z=0;z<allitems[y].items.length;z++){
@@ -131,11 +118,11 @@ module.exports.getInventory = async function getInventory(req,res){
                     break;
                 }
             }
+
             productDetails.name = inventoryDetails[x].name;
             productDetails.category = inventoryDetails[x].category;
             productDetails.avg_usage = 1;
             productDetails.curr_quantity = inventoryDetails[x].currentQuantity;
-            // productDetails.unit = items.inventoryDetails[x].category;
             finalInventory.push(productDetails);
         }
 
@@ -145,15 +132,15 @@ module.exports.getInventory = async function getInventory(req,res){
         });
     }
     catch(err){
-        return res.json({
-            "Error" : err,
+        return res.status(500).json({
+            "Error" : err.message,
             "Location" : "Product Controller"
         });
     }
 }
 
 module.exports.updateProduct = async function getInventory(req,res){
-    let name=req.body.name;
+    let name = req.body.name;
     let currQuantity=req.body.currentQuantity;
     let user = req.body.user;
     try{
@@ -169,16 +156,64 @@ module.exports.updateProduct = async function getInventory(req,res){
             });
         }
         else{
-            return res.json({
+            return res.status(500).json({
                 "Error" : "Inventory Details Not Found"
             });
         }
 
     }
     catch(err){
-        return res.json({
-            Message: "Product Controller",
-            Error: err
+        return res.status(500).json({
+            Error: err.message,
+            Message: "Product Controller"
+        });
+    }
+}
+
+module.exports.graphData = async function graphData(req,res){
+    const d = new Date();
+    let year=d.getFullYear();
+    let month=d.getMonth();
+
+    try{
+        let user=req.body.user;
+        let name=req.body.name;
+
+        if(name){
+            let graphData =[];
+            for(x=0;x<6;x++){
+                let data = await productModel.findOne({"user":user , "name":name , "month":months[month] , "year":year});
+                let tempData = {"name": name , "month" : months[month] , "year":year , "price":0 , "totalQuantity":0};
+                
+                if(data){
+                    tempData.price = data.price;
+                    tempData.totalQuantity = data.totalQuantity;
+                }
+
+                graphData.push(tempData);
+                month--;
+                if(month<0){
+                    month=11;
+                    year--;
+                }
+            }
+            
+            return res.json({
+                Message : "Bar Graph Data",
+                data : graphData
+            });
+        }
+        else{
+            return res.status(500).json({
+                Error: "Product Name Not Found"
+            });
+        }
+
+    }
+    catch(err){
+        return res.status(500).json({
+            Error: err.message,
+            Message: "Product Controller"
         });
     }
 }

@@ -1,5 +1,5 @@
 const express = require('express');
-const {signup,login,logout,isLoggedIn,protectRoute} = require('../Controller/authController');
+const {signup,login,isLoggedIn,protectRoute} = require('../Controller/authController');
 
 const userRouter=express.Router();
 
@@ -18,6 +18,5 @@ userRouter.route('/login')
 // // Logout User
 // userRouter.route('/logout')
 // .get(logout);
-
 
 module.exports = userRouter;

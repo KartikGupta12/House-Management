@@ -1,9 +1,8 @@
 const express = require('express');
-const {createProduct,getInventory,updateProduct} = require ('../Controller/productController');
+const {createProduct,getInventory,updateProduct,graphData} = require ('../Controller/productController');
 const {protectRoute} = require('../Controller/authController');
 
 const productRouter = express.Router();
-
 productRouter.use(protectRoute);
 
 productRouter.route('/')
@@ -11,6 +10,7 @@ productRouter.route('/')
 .post(createProduct)
 .patch(updateProduct);
 
-module.exports = productRouter;
+productRouter.route('/graph')
+.get(graphData);
 
-// .patch(updateProduct);
+module.exports = productRouter;
