@@ -149,7 +149,7 @@ function EnterProducts() {
             </form>
         </div>
 
-    );
+);
 }
 
 export default EnterProducts;

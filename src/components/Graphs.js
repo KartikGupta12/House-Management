@@ -4,13 +4,14 @@ import UserContext from "../context/UserContext";
 import PieChart from "./Graphs/PieChart";
 import GetProductsDetails from "../Controllers/GetProductsDetails";
 import Table from "./Tables/Table";
+import Spinner from "./Spinner";
 
 function Graphs() {
     const [labels, setLabels] = useState([]);
     const [series, setSeries] = useState([]);
     const colors = ['rgb(0, 143, 251)', 'rgb(0, 227, 150)', 'rgb(254, 176, 25)', 'rgb(255, 69, 96)', 'rgb(119, 93, 208)', 'rgb(0, 143, 251)', 'rgb(0, 227, 150)'];
     const context = useContext(UserContext);
-    const {FlipLoginStats, setCompleteData, data} = context;
+    const {FlipLoginStats, setCompleteData, data, toogleWait, wait} = context;
     const token = localStorage.getItem('authToken');
     const setData = (data) => {
         setSeries([]);
@@ -23,6 +24,7 @@ function Graphs() {
         }
     };
     useEffect(() => {
+        toogleWait(true);
         if (!token) FlipLoginStats(false);
         check(token).then((res) => {
             if (!res) FlipLoginStats(false);
@@ -32,9 +34,11 @@ function Graphs() {
                     GetProductsDetails(token).then(data => {
                         setCompleteData(data);
                         setData(data);
+                        toogleWait(false);
                     });
                 } else {
                     setData(data);
+                    toogleWait(false);
                 }
             }
         });
@@ -44,8 +48,9 @@ function Graphs() {
             <div className="Graph">
                 <div className="row">
                     <div className="col-lg-8 col-sm-12 col-md-12">
-                        <PieChart colors={colors} labels={labels} series={series}
-                                  title={'Monthly expenditure category wise'}/>
+                        {!wait && <PieChart colors={colors} labels={labels} series={series}
+                                   title={'Monthly expenditure category wise'}/>}
+                        <Spinner color="light"/>
                     </div>
                     <div className="col-lg-4 col-sm-12 col-md-12">
                         <Table labels={labels} colors={colors} series={series}/>

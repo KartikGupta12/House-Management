@@ -7,6 +7,7 @@ const AlertState = ({children}) => {
     const [isLogin, setIsLogin] = useState(false);
     const [data, setData] = useState(null);
     const [allDetails, setAlldetails] = useState(null);
+    const [wait, setWait] = useState(false);
     const showAlert = (msg, type) => {
         setAlert({
             show: true, msg: msg, type: type
@@ -28,13 +29,18 @@ const AlertState = ({children}) => {
     const setCompleteDetails = (details) => {
         setAlldetails(details);
     }
+
+    const toogleWait = (set) => {
+        setWait(set);
+    }
     return (
         <UserContext.Provider
             value={{
                 showAlert, alert,
                 FlipLoginStats, isLogin,
                 setCompleteDetails, allDetails,
-                setCompleteData, data
+                setCompleteData, data,
+                toogleWait, wait
             }}>
             {children}
         </UserContext.Provider>
