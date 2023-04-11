@@ -1,28 +1,24 @@
 .form-container{
     display: flex;
+    background: #70e1f5;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #ffd194, #70e1f5);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #ffd194, #70e1f5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    height: 95vh;
+    justify-content: center;
+    align-items: center;
 }
 .EnterProduct-Form {
     padding: 50px 25px 0 25px;
+    background: #C9FFBF;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #FFAFBD, #C9FFBF);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #FFAFBD, #C9FFBF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
     width: 70%;
+    height: 80vh;
 }
 @media screen and (width <= 1000px) {
     form {
         width: 100%;
     }
-    .GIFS{
-        display: none;
-    }
-}
-.GIFS{
-    margin: 50px;
-    width: 30%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-.GIFS > img{
-    object-fit: cover;
-    display: block;
-    margin: 50px auto;
-    width: 100%;
-    border-radius: 50%;
-    aspect-ratio: 50/50;
 }

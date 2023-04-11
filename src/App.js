@@ -13,6 +13,7 @@ import "./CSS/Navbar.css"
 import "./CSS/EnterProduct.css"
 import "./CSS/Home.css"
 import "./CSS/Inventory.css"
+import "./CSS/Graph.css"
 function App() {
     return (
         <>

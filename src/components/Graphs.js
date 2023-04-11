@@ -41,7 +41,7 @@ function Graphs() {
     }, []);
     return (
         <>
-            <div>
+            <div className="Graph">
                 <div className="row">
                     <div className="col-lg-8 col-sm-12 col-md-12">
                         <PieChart colors={colors} labels={labels} series={series}

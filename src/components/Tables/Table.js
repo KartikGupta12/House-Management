@@ -16,7 +16,7 @@ function Table({labels, series, colors}) {
                         return (
                             <tr key={ind}>
                                 <th style={{color: `${colors[ind]}`}} scope="row">{val}</th>
-                                <td>{series[ind]}</td>
+                                <td>{'₹ ' + series[ind]}</td>
                             </tr>
                         )
                     })

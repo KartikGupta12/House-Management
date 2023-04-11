@@ -31,6 +31,17 @@ function PieChart({labels, series, title, colors}) {
                         text: title,
                         style: {
                             fontSize: '20px',
+                            color: 'white',
+                        }
+                    },
+                    legend: {
+                        position: 'right',
+                        horizontalAlign: 'left',
+                        fontSize: '20px',
+                        fontFamily: 'Helvetica, Arial, sans-serif',
+                        fontWeight: 600,
+                        labels: {
+                            colors: 'white',
                         }
                     },
                     colors: colors,
