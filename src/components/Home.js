@@ -1,6 +1,19 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
+import check from "../Controllers/CheckJwt";
+import UserContext from "../context/UserContext";
+
 
 function Home() {
+    const token = localStorage.getItem('authToken');
+    const context = useContext(UserContext);
+    const {FlipLoginStats} = context;
+    useEffect(() => {
+        check(token).then((res) => {
+            if (res) {
+                FlipLoginStats(true);
+            }
+        });
+    }, []);
     const img1 = require('../assets/img1.jpg');
     const img5 = require('../assets/img5.gif');
     return (
@@ -32,7 +45,7 @@ function Home() {
                         </div>
                     </div>
                     <div className="carousel-item ">
-                        <img  src={img1} className="bg-image"
+                        <img src={img1} className="bg-image"
                              alt="Image for app"/>
                         <div className="carousel-caption d-none d-md-block">
                             <h5>Third slide label</h5>

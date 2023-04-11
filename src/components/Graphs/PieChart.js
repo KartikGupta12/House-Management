@@ -1,26 +1,47 @@
-import React from 'react';
+import React, {useLayoutEffect, useState} from 'react';
 import Chart from 'react-apexcharts';
 
-function PieChart({labels, series, title}) {
+// This function is used to get the size of the window
+// custom hook
+function useWindowSize() {
+    const [size, setSize] = useState([0, 0]);
+    useLayoutEffect(() => {
+        function updateSize() {
+            setSize([window.innerWidth, window.innerHeight]);
+        }
+
+        window.addEventListener('resize', updateSize);
+        updateSize();
+        return () => window.removeEventListener('resize', updateSize);
+    }, []);
+    return size;
+}
+
+function PieChart({labels, series, title, colors}) {
+    const [width] = useWindowSize();
     return (
         <>
             <Chart
                 type='pie'
-                width={700}
-                height={400}
+                width={width <= 700 ? width : "85%"}
+                height={450}
                 series={series}
                 options={{
                     title: {
                         text: title,
-                        style:{
+                        style: {
                             fontSize: '20px',
                         }
                     },
-                    // colors: ['#00FFFF','#7FFFD4','#454B1B','#088F8F','#AAFF00'],
+                    colors: colors,
                     noData: {
                         text: 'Empty Data',
                     },
-                    labels: labels
+                    labels: labels,
+                    responsive: [{
+                        breakpoint: 480,
+                        options: {}
+                    }]
                 }}
             >
             </Chart>

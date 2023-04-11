@@ -12,7 +12,7 @@ function ProfileMenu() {
             {isLogin && <div className="dropdown-center" data-bs-theme="dark">
                 <button className=" btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
                     <img width="30" className="mx-2" src={profilePic} alt="logo"/>
-                    <span className="text-light user-select-none" role="button">Chirag_kalwani</span>
+                    <span className="text-light user-select-none" role="button">{localStorage.getItem('name')}</span>
                 </button>
                 <ul className="dropdown-menu">
                     <li><a className="dropdown-item" href="#">Settings</a></li>

@@ -16,7 +16,6 @@ function Login() {
         });
     };
     const handleSubmit = async () => {
-        console.log('here');
         try {
             let res = await fetch(server + 'user/login', {
                 method: "POST",
@@ -28,6 +27,7 @@ function Login() {
             let jsonData = await res.json();
             if (jsonData['authToken']) {
                 localStorage.setItem('authToken', jsonData['authToken']);
+                localStorage.setItem('name', jsonData['UserDetails']['name']);
                 showAlert('Login successfully', "success");
                 FlipLoginStats(true);
                 history('/');

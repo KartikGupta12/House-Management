@@ -1,16 +1,14 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {useNavigate} from "react-router-dom";
 import check from "../Controllers/CheckJwt";
 import UserContext from "../context/UserContext";
 
 function EnterProducts() {
     const context = useContext(UserContext);
-    const {showAlert, FlipLoginStats} = context;
-    const history = useNavigate();
+    const {FlipLoginStats, allDetails, setCompleteDetails} = context;
     const token = localStorage.getItem('authToken');
     // All use States
     const [details, setDetail] = useState({
-        category: "", product_name: "", brand: "", Price: "", Quantity: "", Remaining_quantity: ""
+        category: "", product_name: "", brand: "", price: "", Quantity: "", Remaining_quantity: ""
     });
     const [products, setProducts] = useState([]);
     const [unit, setUnit] = useState("");
@@ -33,43 +31,47 @@ function EnterProducts() {
     }
 
     const fetchData = async () => {
-        try {
-            let response = await fetch("http://localhost:8000/getAllItems");
-            let json = await response.json();
-            setCategories(json['Items']);
-        } catch (error) {
-            console.log(error);
+        if (!allDetails) {
+            try {
+                let response = await fetch("http://localhost:8000/getAllItems");
+                let json = await response.json();
+                setCategories(json['Items']);
+                setCompleteDetails(json['Items']);
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            setCategories(allDetails);
         }
     };
 
     const onDataSubmit = async (e) => {
         e.preventDefault();
-        // try {
-        //     const response = await fetch("http://localhost:5000/enterProduct", {
-        //         method: "POST",
-        //         headers: {
-        //             'content-Type': 'application/json',
-        //             'auth-token': localStorage.getItem('token')
-        //         },
-        //         body: JSON.stringify({
-        //             category: details.category,
-        //             brand: details.brand,
-        //             price: details.price,
-        //             name: details.product_name,
-        //             newQuantity: details.Quantity,
-        //             RemainingQuantity: details.Remaining_quantity
-        //         })
-        //     });
-        //     if (response.status === 200) {
-        //         window.alert("Product entered successfully");
-        //     }
-        //
-        // } catch (error) {
-        //     console.log(error);
-        // }
-        setDetail({
-            category: "", product_name: "", brand: "", Price: "", Quantity: "", Remaining_quantity: ""
-        })
+        try {
+            const response = await fetch("http://localhost:8000/product", {
+                method: "POST",
+                headers: {
+                    'content-Type': 'application/json',
+                    authToken: localStorage.getItem('authToken')
+                },
+                body: JSON.stringify({
+                    'category': details.category,
+                    'brand': details.brand,
+                    'price': Number(5),
+                    'name': details.product_name,
+                    'newQuantity': Number(details.Quantity),
+                    'currentQuantity': Number(details.Remaining_quantity)
+                })
+            });
+            const json = await response.json();
+            console.log(json);
+
+        } catch (error) {
+            console.log(error);
+        }
+        // setDetail({
+        //     category: "", product_name: "", brand: "", Price: "", Quantity: "", Remaining_quantity: ""
+        // })
     }
 
     useEffect(() => {
@@ -145,10 +147,6 @@ function EnterProducts() {
                 </button>
 
             </form>
-
-            <div className='GIFS'>
-                <img src={require(`../assets/${details.category || 'Fruits'}.gif`)} alt="GIFS"/>
-            </div>
         </div>
 
     );
