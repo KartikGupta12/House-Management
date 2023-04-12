@@ -7,12 +7,16 @@ import Table from "./Tables/Table";
 import Spinner from "./Spinner";
 
 function Graphs() {
+
+
     const [labels, setLabels] = useState([]);
     const [series, setSeries] = useState([]);
     const colors = ['rgb(0, 143, 251)', 'rgb(0, 227, 150)', 'rgb(254, 176, 25)', 'rgb(255, 69, 96)', 'rgb(119, 93, 208)', 'rgb(0, 143, 251)', 'rgb(0, 227, 150)'];
     const context = useContext(UserContext);
     const {FlipLoginStats, setCompleteData, data, toogleWait, wait} = context;
     const token = localStorage.getItem('authToken');
+
+
     const setData = (data) => {
         setSeries([]);
         setLabels([]);
@@ -23,6 +27,8 @@ function Graphs() {
             setSeries(prev => [...prev, sum]);
         }
     };
+
+
     useEffect(() => {
         toogleWait(true);
         if (!token) FlipLoginStats(false);
@@ -43,6 +49,9 @@ function Graphs() {
             }
         });
     }, []);
+
+
+
     return (
         <>
             <div className="Graph">

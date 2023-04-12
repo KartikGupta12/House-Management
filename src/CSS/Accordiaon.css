@@ -1,26 +1,17 @@
-.acbody{
-    
-    background: -webkit-linear-gradient(to right, #4568dc, #b06ab3);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #4568dc, #b06ab3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    
+.acbody {
+    background: -webkit-linear-gradient(to right, #4568dc, #b06ab3);
+    background: linear-gradient(to right, #4568dc, #b06ab3);
 }
-/* #ddd6f3 → #faaca8 */
-/* #4568dc → #b06ab3 */
 
-
-
-
-  
-  
-  .btn2 {
+.btn2 {
     display: inline-block;
     width: 40px;
     height: 40px;
-   
+
     background-color: aqua;
     border-radius: 50%;
     box-shadow: 0 5px 15px -5px #fbfcfe;
     color: #1bb766;
-    
-  }
+
+}
   

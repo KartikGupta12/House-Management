@@ -25,6 +25,7 @@ function Login() {
                 }
             });
             let jsonData = await res.json();
+            console.log(jsonData);
             if (jsonData['authToken']) {
                 localStorage.setItem('authToken', jsonData['authToken']);
                 localStorage.setItem('name', jsonData['UserDetails']['name']);

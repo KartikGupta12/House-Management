@@ -115,7 +115,7 @@ function Inventory() {
 
                 <h2 className='inventh2'>This Month Inventory</h2>
                 {!wait && Products.map((data, index) =>
-                    <div class="accordion" id="accordionExample">
+                    <div className="accordion" id="accordionExample">
                         <Acordion key={index} category={data.category} details={data.product} number={acordionNum[index]}
                             handleclick={handleclick} />
                     </div>

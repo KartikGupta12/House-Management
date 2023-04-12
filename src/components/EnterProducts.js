@@ -57,10 +57,10 @@ function EnterProducts() {
                 body: JSON.stringify({
                     'category': details.category,
                     'brand': details.brand,
-                    'price': Number(5),
+                    'price': Number(details.price),
                     'name': details.product_name,
                     'newQuantity': Number(details.Quantity),
-                    'currentQuantity': Number(details.Remaining_quantity)
+                    'remainingQuantity': Number(details.Remaining_quantity)
                 })
             });
             const json = await response.json();
