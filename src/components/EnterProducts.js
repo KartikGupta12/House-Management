@@ -70,7 +70,7 @@ function EnterProducts() {
             console.log(error);
         }
         // setDetail({
-        //     category: "", product_name: "", brand: "", Price: "", Quantity: "", Remaining_quantity: ""
+        //     category: "", product_name: "", brand: "", price: "", Quantity: "", Remaining_quantity: ""
         // })
     }
 
@@ -89,39 +89,89 @@ function EnterProducts() {
         });
     }, []);
 
+    
+    const errorMessage="* It is a required field and it should be a valid positive number";
+    const errorMessage2="* It is a required field ";
+    let require=true;
+    // ^(0|[1-9][0-9]{0,9})$
+    const [focus1, setFocus1] = useState(false);
+    const [focus2, setFocus2] = useState(false);
+    const [focus3, setFocus3] = useState(false);
+    const [focus4, setFocus4] = useState(false);
+    const [focus5, setFocus5] = useState(false);
+    const handlefocus1=(e)=>{
+        setFocus1(true);
+    };
+    const handlefocus2=(e)=>{
+        setFocus2(true);
+    };
+    const handlefocus3=(e)=>{
+        setFocus3(true);
+    };
+    const handlefocus4=(e)=>{
+        setFocus4(true);
+    };
+
+    const handlefocus5=(e)=>{
+        setFocus5(true);
+    };
+
+    const isvalid=()=>{
+        const regex=/^(0|[1-9][0-9]{0,9})$/;
+        if(details.Quantity==""||details.Remaining_quantity==""||details.price==""||details.category==""||details.product_name==""){
+            setIssubmit(false);
+        }
+        else if(!regex.test(details.price)||!regex.test(details.Quantity)||regex.test(details.Remaining_quantity)){
+            setIssubmit(true);
+        }
+        else{
+            setIssubmit(true);
+        }
+    }
+    const [issubmit, setIssubmit] = useState(false);
+    useEffect(() => {
+        isvalid();
+    }, [details])
+    
+    
+
     return (
         <div className='form-container'>
-            <form className="EnterProduct-Form">
+            <form className="EnterProduct-Form" >
                 {/*Select Category*/}
                 <div className="form-floating mb-3">
-                    <select onChange={onCategorySelect} id="category" className="form-select" name="category">
-                        <option disabled selected>Select Category</option>
+                    <select required={require}  onBlur={handlefocus4} focused={focus4.toString()} onChange={onCategorySelect} id="category" className="form-select" name="category">
+                        <option  value="">Select Category</option>
                         {categories.map((data, index) => <option value={data.category}
                                                                  key={index}>{data.category}</option>)}
                     </select>
                     <label htmlFor="category">Category</label>
+                    <span className='error'>{errorMessage2}</span>
+
                 </div>
 
                 {/*Select Product*/}
                 <div className="form-floating mb-3">
-                    <select onChange={onProductSelect} id="product" className="form-select" name="product_name">
-                        <option disabled selected>Select Product</option>
+                    <select  required={require}  onBlur={handlefocus5} focused={focus5.toString()} onChange={onProductSelect} id="product" className="form-select" name="product_name">
+                    <option  value="">Select Product</option>
                         {products.map((data, index) => <option value={data.name} key={index}> {data.name} </option>)}
                     </select>
                     <label htmlFor="product">Products</label>
+                    <span className='error'>{errorMessage2}</span>
                 </div>
-
+                
                 {/*Enter Quantity*/}
                 <div className="form-floating mb-3">
-                    <input type="text" name="Quantity" id="quantity" placeholder='Not Used' onChange={onValueChange}
+                    <input pattern={"^(0|[1-9][0-9]{0,9})$"} required={require} onBlur={handlefocus1} focused={focus1.toString()}  type="text" name="Quantity" id="quantity" placeholder='Not Used' onChange={onValueChange}
                            value={details.Quantity}
                            className="form-control"/>
                     <label htmlFor="quantity">Quantity in {unit}</label>
+                    <span className='error'>{errorMessage}</span>
                 </div>
 
                 {/*Enter Brand*/}
                 <div className="form-floating mb-3">
-                    <input type="text" name="brand" id="brand" placeholder='Not Used' value={details.brand}
+                    <input  type="text" name="brand" id="brand" placeholder='Not Used' value={details.brand}
                            onChange={onValueChange}
                            className="form-control"/>
                     <label htmlFor="brand">Brand</label>
@@ -129,21 +179,23 @@ function EnterProducts() {
 
                 {/*Enter Price*/}
                 <div className="form-floating mb-3">
-                    <input type="text" name="Price" id="price" placeholder="Not Used" value={details.Price}
+                    <input pattern={"^(0|[1-9][0-9]{0,9})$"} onBlur={handlefocus2} focused={focus2.toString()}  required={require} type="text" name="price" id="price" placeholder="Not Used" value={details.price}
                            onChange={onValueChange}
                            className="form-control"/>
                     <label htmlFor="price">Price</label>
+                    <span className='error'>{errorMessage}</span>
                 </div>
 
                 {/*Enter Remaining Quantity*/}
                 <div className="form-floating mb-3">
-                    <input type="text" name="Remaining_quantity" id="remain" value={details.Remaining_quantity}
+                    <input pattern={"^(0|[1-9][0-9]{0,9})$"} onBlur={handlefocus3} focused={focus3.toString()}  required={require} type="text" name="Remaining_quantity" id="remain" value={details.Remaining_quantity}
                            onChange={onValueChange} className="form-control" placeholder='Qunatity left in Home'/>
-                    <label htmlFor="remain">Remaining Quantity</label>
+                    <label htmlFor="remain">Quantity in your House Left</label>
+                    <span className='error'>{errorMessage}</span>
                 </div>
 
                 {/*Submit Details*/}
-                <button type="button" onClick={onDataSubmit} className="btn btn-primary btn-block mb-4">Submit Details
+                <button type="button" disabled={!issubmit} onClick={onDataSubmit} className="btn btn-primary btn-block mb-4">Submit Details
                 </button>
 
             </form>

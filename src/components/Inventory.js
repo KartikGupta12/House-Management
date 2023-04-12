@@ -33,7 +33,7 @@ function Inventory() {
     const acordionNum = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"];
     const ref = useRef(null);
     const [details, setDetails] = useState([]);
-    const [newdetails, setnewDetails] = useState({ product_name: "", new_quantity: 0 });
+    const [newdetails, setnewDetails] = useState({ product_name: "", new_quantity: "" });
     const handleclick = (details) => {
         setDetails(details);
         ref.current.click();
@@ -49,17 +49,40 @@ function Inventory() {
                     'content-Type': 'application/json',
                     authToken: token
                 },
-                body: JSON.stringify({ name: newdetails.product_name, currentQuantity: newdetails.new_quantity }),
+                body: JSON.stringify({ name: newdetails.product_name, currentQuantity: Number(newdetails.new_quantity)}),
             });
             if (response.status === 200) {
                 window.alert("Product updated successfully");
             }
-            setnewDetails({ product_name: "", new_quantity: 0 });
+            setnewDetails({ product_name: "", new_quantity: "" });
         } catch (error) {
-            setnewDetails({ product_name: "", new_quantity: 0 });
+            setnewDetails({ product_name: "", new_quantity: "" });
             console.log({ message: error });
         }
     }
+    const [focus1, setFocus1] = useState(false);
+    const [focus2, setFocus2] = useState(false);
+    const errorMessage1="* It is a required field and it should be a valid positive number";
+    const errorMessage2="* It is a required field ";
+    const handlefocus1=(e)=>{
+        setFocus1(true);
+    };
+    const handlefocus2=(e)=>{
+        setFocus2(true);
+    };
+    const isvalid=()=>{
+        const regex=/^(0|[1-9][0-9]{0,9})$/;
+        if(newdetails.product_name==""||newdetails.new_quantity=="")setIssubmit(false);
+        else if(!regex.test(newdetails.new_quantity))setIssubmit(false);
+        else{
+            setIssubmit(true);
+        }
+    }
+    const [issubmit, setIssubmit] = useState(false);
+    useEffect(() => {
+        isvalid();
+    }, [newdetails])
+    
     return (
         <>
             <div className='inventory'>
@@ -87,27 +110,29 @@ function Inventory() {
                                     <form >
                                         {/*Select Product*/}
                                         <div className="form-floating mb-3">
-                                            <select id="product" onChange={onchange} value={newdetails.product_name}
+                                            <select required={true}  onBlur={handlefocus1} focused={focus1.toString()} id="product" onChange={onchange} value={newdetails.product_name}
                                                 name="product_name" className="form-select">
-                                                <option selected value={""}>Select Product to edit</option>
+                                                <option  value={""}>Select Product to edit</option>
                                                 {details.map((data, index) => <option value={data.name}
                                                     key={index}> {data.name} </option>)}
                                             </select>
                                             <label htmlFor="product">Products</label>
+                                            <span className='error'>{errorMessage2}</span>
                                         </div>
                                         {/*Enter Quantity*/}
                                         <div className="form-floating mb-3">
-                                            <input type="number" name="new_quantity" id="quantity" placeholder='Not Used'
+                                            <input required={true}  onBlur={handlefocus2} focused={focus2.toString()} type="number" name="new_quantity" id="quantity" placeholder='Not Used'
                                                 className="form-control" value={newdetails.new_quantity}
                                                 onChange={onchange} />
                                             <label htmlFor="quantity">Edit Quantity </label>
+                                            <span className='error'>{errorMessage1}</span>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button"  onClick={onclick} className="btn btn-primary">Submit</button>
+                                <button type="button" disabled={!issubmit}  onClick={onclick} className="btn btn-primary">Submit</button>
                             </div>
                         </div>
                     </div>
