@@ -28,7 +28,7 @@ function Login() {
             console.log(jsonData);
             if (jsonData['authToken']) {
                 localStorage.setItem('authToken', jsonData['authToken']);
-                localStorage.setItem('name', jsonData['UserDetails']['name']);
+                localStorage.setItem('name', jsonData['User']['name']);
                 showAlert('Login successfully', "success");
                 FlipLoginStats(true);
                 history('/');
