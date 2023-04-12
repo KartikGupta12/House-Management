@@ -32,7 +32,7 @@ const Acordion = (props) => {
                                     <th scope="col">#</th>
                                     <th scope="col">Product</th>
                                     <th scope="col">Usage</th>
-                                    <th scope="col">Expense
+                                    <th scope="col">Expense(Rs)
                                     </th>
                                     <th scope="col">Quantity left
 
@@ -61,7 +61,7 @@ const Acordion = (props) => {
                                             <td>{data.name}</td>
                                             <td>{data.avg_usage}</td>
                                             <td>{data.price}</td>
-                                            <td>{data.curr_quantity}</td>
+                                            <td>{data.curr_quantity}{" "}{data.unit}</td>
 
                                         </tr>
                                     );
