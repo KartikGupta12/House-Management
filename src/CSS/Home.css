@@ -23,9 +23,9 @@
 }
 
 
-/*body {*/
-/*    background-color: #565151;*/
-/*}*/
+/* body {
+    background-color: #565151;
+} */
 
 .plate {
     width: 410px;
@@ -90,6 +90,8 @@
     font-size: 100px;
 }
 
+.Home{
+    background-color: #222;
+}
 
 
- 

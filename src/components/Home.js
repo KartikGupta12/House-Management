@@ -31,16 +31,16 @@ function Home() {
                         <img src={img1} className="bg-image"
                             alt="Image for app" />
                         <div className="carousel-caption d-none d-md-block">
-                            <h5>First slide label</h5>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                            <h5>Inventory</h5>
+                            <p>GroceWise will keep you on track of your inventory</p>
                         </div>
                     </div>
                     <div className="carousel-item active">
                         <img src={img5} className="bg-image"
                             alt="Image for app" />
                         <div className="carousel-caption d-none d-md-block">
-                            <h5>Second slide label</h5>
-                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                            <h5>Graphs/PieCahrt</h5>
+                            <p>GroceWise will manage your Your daily expenses</p>
                         </div>
                     </div>
 
@@ -57,11 +57,11 @@ function Home() {
                 </button>
             </div>
             <div class="plate">
-                <p class="script"><span>website name</span></p>
-                <p class="shadow text1">tag1</p>
-                <p class="shadow text2">tag2</p>
-                <p class="shadow text3">tag2</p>
-                <p class="script"><span>finish</span></p>
+                <p class="script"><span>Your One stop Solution to keep track of</span></p>
+                <p class="shadow text1">Grocery (inventory)</p>
+
+                <p class="shadow text3">and Expenses</p>
+                <p class="script"><span> -> grocewise</span></p>
             </div>
         </div>
     );

@@ -8,6 +8,7 @@ function Inventory() {
     const context = useContext(UserContext);
     const { FlipLoginStats, setCompleteData, data, toogleWait, wait } = context;
     const [Products, setProducts] = useState([]);
+    const [details, setDetails] = useState([]);
     const token = localStorage.getItem('authToken');
 
     useEffect(() => {
@@ -32,7 +33,7 @@ function Inventory() {
     }, []);
     const acordionNum = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"];
     const ref = useRef(null);
-    const [details, setDetails] = useState([]);
+
     const [newdetails, setnewDetails] = useState({ product_name: "", new_quantity: "" });
     const handleclick = (details) => {
         setDetails(details);
@@ -62,8 +63,8 @@ function Inventory() {
     }
     const [focus1, setFocus1] = useState(false);
     const [focus2, setFocus2] = useState(false);
-    const errorMessage1="* It is a required field and it should be a valid positive number";
-    const errorMessage2="* It is a required field ";
+    const errorMessage1="* It is a required field and it should be a valid positive number less than value in your inventory";
+    const errorMessage2="* It is a required field";
     const handlefocus1=(e)=>{
         setFocus1(true);
     };
@@ -71,9 +72,17 @@ function Inventory() {
         setFocus2(true);
     };
     const isvalid=()=>{
+        let qn=0,qo=0;
+        for(let i=0;i<details.length;i++){
+            if(details[i].name===newdetails.product_name){
+                qo=details[i].curr_quantity;
+                qn=newdetails.new_quantity;
+            }
+        }
         const regex=/^(0|[1-9][0-9]{0,9})$/;
         if(newdetails.product_name==""||newdetails.new_quantity=="")setIssubmit(false);
         else if(!regex.test(newdetails.new_quantity))setIssubmit(false);
+        else if(Number(qn)>Number(qo))setIssubmit(false);
         else{
             setIssubmit(true);
         }
@@ -82,7 +91,7 @@ function Inventory() {
     useEffect(() => {
         isvalid();
     }, [newdetails])
-    
+
     return (
         <>
             <div className='inventory'>
@@ -121,7 +130,7 @@ function Inventory() {
                                         </div>
                                         {/*Enter Quantity*/}
                                         <div className="form-floating mb-3">
-                                            <input required={true}  onBlur={handlefocus2} focused={focus2.toString()} type="number" name="new_quantity" id="quantity" placeholder='Not Used'
+                                            <input pattern={"^(0|[1-9][0-9]{0,9})$"} required={true}  onBlur={handlefocus2} focused={focus2.toString()} type="text" name="new_quantity" id="quantity" placeholder='Not Used'
                                                 className="form-control" value={newdetails.new_quantity}
                                                 onChange={onchange} />
                                             <label htmlFor="quantity">Edit Quantity </label>
@@ -134,6 +143,7 @@ function Inventory() {
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 <button type="button" disabled={!issubmit}  onClick={onclick} className="btn btn-primary">Submit</button>
                             </div>
+                            <p className='error2'>* if submit button is disabled check the form fields ,they are required and should be valid</p>
                         </div>
                     </div>
                 </div>
