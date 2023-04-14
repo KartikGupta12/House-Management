@@ -25,12 +25,16 @@ function Register() {
                 }
             });
             const da = await res.json();
-            if (da.Data) {
+            console.log(da)
+            if(da['Error'] === "userModel validation failed: password: Password Length Must be Greater than or equal to 8")
+                showAlert('Password Length Must be Greater than or equal to 8', "danger");
+            else if(da["Error"])
+                showAlert('Email is already registered', "danger");
+            else if (da.Data) {
                 showAlert('Register successfully now please log in', "success");
                 history('/login');
-            } else {
+            } else
                 showAlert('Error While Register', "danger");
-            }
         } catch (err) {
             showAlert("Internal Server Error: Try again after some time", "danger");
         }

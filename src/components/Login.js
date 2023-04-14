@@ -32,10 +32,12 @@ function Login() {
                 showAlert('Login successfully', "success");
                 FlipLoginStats(true);
                 history('/');
-            } else FlipLoginStats(false);
+            } else {
+                showAlert('Invalid credentials', "danger");
+            }
         } catch (err) {
             console.log('login error: ' + err);
-            FlipLoginStats(false);
+            showAlert('Internal server error', "danger");
         }
     };
     return (
