@@ -5,7 +5,7 @@ import {getAllProducts} from "../Controllers/GetProductsDetails";
 
 function EnterProducts() {
     const context = useContext(UserContext);
-    const {FlipLoginStats, allDetails, setCompleteDetails} = context;
+    const {FlipLoginStats, allDetails, setCompleteDetails, showAlert} = context;
     const token = localStorage.getItem('authToken');
     // All use States
     const [details, setDetail] = useState({
@@ -66,9 +66,10 @@ function EnterProducts() {
             });
             const json = await response.json();
             console.log(json);
-
+            showAlert("Data Added Successfully", "success");
         } catch (error) {
             console.log(error);
+            showAlert("Something went wrong", "danger");
         }
         setDetail({
             category: "", product_name: "", brand: "", price: "", Quantity: "", Remaining_quantity: ""

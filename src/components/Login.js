@@ -19,7 +19,10 @@ function Login() {
         try {
             let res = await fetch(server + 'user/login', {
                 method: "POST",
-                body: JSON.stringify(data),
+                body: JSON.stringify({
+                    email: data.email.toString().toLowerCase(),
+                    password: data.password
+                }),
                 headers: {
                     "Content-Type": "application/json"
                 }

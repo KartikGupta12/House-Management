@@ -28,10 +28,12 @@ function Register() {
             console.log(da)
             if (da['Error'] === "userModel validation failed: password: Password Length Must be Greater than or equal to 8")
                 showAlert('Password Length Must be Greater than or equal to 8', "danger");
-            if (da['Error'] === "userModel validation failed: confirmPassword: Confirm Password Does Not Match The Original Password")
+            else if (da['Error'] === "userModel validation failed: confirmPassword: Confirm Password Does Not Match The Original Password")
                 showAlert('Repeat Password must be equals to Password', "danger");
+            else if (da["Error"] === 'userModel validation failed: email: Email is Not Valid')
+                showAlert('Email is not valid', "danger");
             else if (da["Error"])
-                showAlert('Email is already registered', "danger");
+                showAlert('Email is already Register', "danger");
             else if (da.Data) {
                 showAlert('Register successfully now please log in', "success");
                 history('/login');
