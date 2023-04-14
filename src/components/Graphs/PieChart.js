@@ -1,21 +1,10 @@
 import React, {useLayoutEffect, useState} from 'react';
 import Chart from 'react-apexcharts';
+import useWindowSize from "../../Hooks/useWindowSize";
 
 // This function is used to get the size of the window
 // custom hook
-function useWindowSize() {
-    const [size, setSize] = useState([0, 0]);
-    useLayoutEffect(() => {
-        function updateSize() {
-            setSize([window.innerWidth, window.innerHeight]);
-        }
 
-        window.addEventListener('resize', updateSize);
-        updateSize();
-        return () => window.removeEventListener('resize', updateSize);
-    }, []);
-    return size;
-}
 
 function PieChart({labels, series, title, colors}) {
     const [width] = useWindowSize();

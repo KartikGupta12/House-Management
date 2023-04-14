@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState, useRef } from 'react';
 import Acordion from './Acordion.js';
 import UserContext from "../context/UserContext";
 import check from "../Controllers/CheckJwt";
-import GetProductsDetails from "../Controllers/GetProductsDetails";
+import {GetProductsDetails} from "../Controllers/GetProductsDetails";
 import Spinner from "./Spinner";
 function Inventory() {
     const context = useContext(UserContext);

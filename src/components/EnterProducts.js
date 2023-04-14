@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import check from "../Controllers/CheckJwt";
 import UserContext from "../context/UserContext";
+import {getAllProducts} from "../Controllers/GetProductsDetails";
 
 function EnterProducts() {
     const context = useContext(UserContext);
@@ -33,10 +34,10 @@ function EnterProducts() {
     const fetchData = async () => {
         if (!allDetails) {
             try {
-                let response = await fetch("http://localhost:8000/getAllItems");
-                let json = await response.json();
-                setCategories(json['Items']);
-                setCompleteDetails(json['Items']);
+                getAllProducts(token).then(json => {
+                    setCategories(json['Items']);
+                    setCompleteDetails(json['Items']);
+                })
             } catch (error) {
                 console.log(error);
             }
@@ -69,9 +70,9 @@ function EnterProducts() {
         } catch (error) {
             console.log(error);
         }
-        // setDetail({
-        //     category: "", product_name: "", brand: "", price: "", Quantity: "", Remaining_quantity: ""
-        // })
+        setDetail({
+            category: "", product_name: "", brand: "", price: "", Quantity: "", Remaining_quantity: ""
+        });
     }
 
     useEffect(() => {
@@ -89,80 +90,81 @@ function EnterProducts() {
         });
     }, []);
 
-    
-    const errorMessage="* It is a required field and it should be a valid positive number";
-    const errorMessage2="* It is a required field ";
-    let require=true;
+
+    const errorMessage = "* It is a required field and it should be a valid positive number";
+    const errorMessage2 = "* It is a required field ";
+    let require = true;
     // ^(0|[1-9][0-9]{0,9})$
     const [focus1, setFocus1] = useState(false);
     const [focus2, setFocus2] = useState(false);
     const [focus3, setFocus3] = useState(false);
     const [focus4, setFocus4] = useState(false);
     const [focus5, setFocus5] = useState(false);
-    const handlefocus1=(e)=>{
+    const handlefocus1 = () => {
         setFocus1(true);
     };
-    const handlefocus2=(e)=>{
+    const handlefocus2 = () => {
         setFocus2(true);
     };
-    const handlefocus3=(e)=>{
+    const handlefocus3 = () => {
         setFocus3(true);
     };
-    const handlefocus4=(e)=>{
+    const handlefocus4 = () => {
         setFocus4(true);
     };
 
-    const handlefocus5=(e)=>{
+    const handlefocus5 = () => {
         setFocus5(true);
     };
 
-    const isvalid=()=>{
-        const regex=/^(0|[1-9][0-9]{0,9})$/;
-        if(details.Quantity==""||details.Remaining_quantity==""||details.price==""||details.category==""||details.product_name==""){
+    const isvalid = () => {
+        const regex = /^(0|[1-9][0-9]{0,9})$/;
+        if (details.Quantity === "" || details.Remaining_quantity === "" || details.price === "" || details.category === "" || details.product_name === "") {
             setIssubmit(false);
-        }
-        else if(!regex.test(details.price)||!regex.test(details.Quantity)||regex.test(details.Remaining_quantity)){
+        } else if (!regex.test(details.price) || !regex.test(details.Quantity) || regex.test(details.Remaining_quantity)) {
             setIssubmit(true);
-        }
-        else{
+        } else {
             setIssubmit(true);
         }
     }
     const [issubmit, setIssubmit] = useState(false);
+
     useEffect(() => {
         isvalid();
     }, [details])
-    
-    
+
 
     return (
         <div className='form-container'>
-            <form className="EnterProduct-Form" >
+            <form className="EnterProduct-Form">
                 {/*Select Category*/}
                 <div className="form-floating mb-3">
-                    <select required={require}  onBlur={handlefocus4} focused={focus4.toString()} onChange={onCategorySelect} id="category" className="form-select" name="category">
-                        <option  value="">Select Category</option>
+                    <select required={require} onBlur={handlefocus4} focused={focus4.toString()}
+                            onChange={onCategorySelect} id="category" className="form-select" name="category">
+                        <option value="">Select Category</option>
                         {categories.map((data, index) => <option value={data.category}
                                                                  key={index}>{data.category}</option>)}
                     </select>
                     <label htmlFor="category">Category</label>
                     <span className='error'>{errorMessage2}</span>
-
                 </div>
 
                 {/*Select Product*/}
                 <div className="form-floating mb-3">
-                    <select  required={require}  onBlur={handlefocus5} focused={focus5.toString()} onChange={onProductSelect} id="product" className="form-select" name="product_name">
-                    <option  value="">Select Product</option>
+                    <select required={require} onBlur={handlefocus5} focused={focus5.toString()}
+                            onChange={onProductSelect} id="product" className="form-select" name="product_name">
+                        <option value="">Select Product</option>
                         {products.map((data, index) => <option value={data.name} key={index}> {data.name} </option>)}
                     </select>
                     <label htmlFor="product">Products</label>
                     <span className='error'>{errorMessage2}</span>
                 </div>
-                
+
                 {/*Enter Quantity*/}
                 <div className="form-floating mb-3">
-                    <input pattern={"^(0|[1-9][0-9]{0,9})$"} required={require} onBlur={handlefocus1} focused={focus1.toString()}  type="text" name="Quantity" id="quantity" placeholder='Not Used' onChange={onValueChange}
+                    <input pattern={"^(0|[1-9][0-9]{0,9})$"} required={require} onBlur={handlefocus1}
+                           focused={focus1.toString()} type="text" name="Quantity" id="quantity" placeholder='Not Used'
+                           onChange={onValueChange}
                            value={details.Quantity}
                            className="form-control"/>
                     <label htmlFor="quantity">Quantity in {unit}</label>
@@ -171,7 +173,7 @@ function EnterProducts() {
 
                 {/*Enter Brand*/}
                 <div className="form-floating mb-3">
-                    <input  type="text" name="brand" id="brand" placeholder='Not Used' value={details.brand}
+                    <input type="text" name="brand" id="brand" placeholder='Not Used' value={details.brand}
                            onChange={onValueChange}
                            className="form-control"/>
                     <label htmlFor="brand">Brand</label>
@@ -179,7 +181,9 @@ function EnterProducts() {
 
                 {/*Enter Price*/}
                 <div className="form-floating mb-3">
-                    <input pattern={"^(0|[1-9][0-9]{0,9})$"} onBlur={handlefocus2} focused={focus2.toString()}  required={require} type="text" name="price" id="price" placeholder="Not Used" value={details.price}
+                    <input pattern={"^(0|[1-9][0-9]{0,9})$"} onBlur={handlefocus2} focused={focus2.toString()}
+                           required={require} type="text" name="price" id="price" placeholder="Not Used"
+                           value={details.price}
                            onChange={onValueChange}
                            className="form-control"/>
                     <label htmlFor="price">Price</label>
@@ -188,20 +192,23 @@ function EnterProducts() {
 
                 {/*Enter Remaining Quantity*/}
                 <div className="form-floating mb-3">
-                    <input pattern={"^(0|[1-9][0-9]{0,9})$"} onBlur={handlefocus3} focused={focus3.toString()}  required={require} type="text" name="Remaining_quantity" id="remain" value={details.Remaining_quantity}
+                    <input pattern={"^(0|[1-9][0-9]{0,9})$"} onBlur={handlefocus3} focused={focus3.toString()}
+                           required={require} type="text" name="Remaining_quantity" id="remain"
+                           value={details.Remaining_quantity}
                            onChange={onValueChange} className="form-control" placeholder='Qunatity left in Home'/>
                     <label htmlFor="remain">Quantity in your House Left</label>
                     <span className='error'>{errorMessage}</span>
                 </div>
 
                 {/*Submit Details*/}
-                <button type="button" disabled={!issubmit} onClick={onDataSubmit} className="btn btn-primary btn-block mb-4">Submit Details
+                <button type="button" disabled={!issubmit} onClick={onDataSubmit}
+                        className="btn btn-primary btn-block mb-4">Submit Details
                 </button>
 
             </form>
         </div>
 
-);
+    );
 }
 
 export default EnterProducts;

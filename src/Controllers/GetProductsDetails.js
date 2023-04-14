@@ -29,9 +29,14 @@ const makeitems = (unique_categories, details) => {
     return items;
 }
 
+async function getAllProducts(token){
+    let response = await fetch("http://localhost:8000/getAllItems");
+    return await response.json();
+}
+
 async function GetProductsDetails(token) {
     let data = await fetchData(token);
     return makeitems([...new Set(data['Inventory'].map((element) => element.category))], data['Inventory']);
 }
 
-export default GetProductsDetails;
+export {GetProductsDetails, getAllProducts};
