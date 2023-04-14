@@ -181,7 +181,8 @@ module.exports.graphData = async function graphData(req,res){
 
         if(name){
             let graphData =[];
-            for(x=0;x<6;x++){
+            for await (const x of [0,1,2,3,4,5]) {
+                
                 let data = await productModel.findOne({"user":user , "name":name , "month":months[month] , "year":year});
                 let tempData = {"name": name , "month" : months[month] , "year":year , "price":0 , "totalQuantity":0};
                 
@@ -190,7 +191,7 @@ module.exports.graphData = async function graphData(req,res){
                     tempData.totalQuantity = data.totalQuantity;
                 }
 
-                graphData.push(tempData);
+                graphData.push(await tempData);
                 month--;
                 if(month<0){
                     month=11;
