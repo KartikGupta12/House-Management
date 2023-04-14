@@ -16,7 +16,9 @@ const fetchData = async (token, name) => {
     }
 };
 const GetGraphData = async (token, name) => {
-    return await fetchData(token, name);
+    let data = await fetchData(token, name);
+    console.log(data)
+    return data
 }
 
 export default GetGraphData;
