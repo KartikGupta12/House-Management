@@ -27,14 +27,18 @@
 #eacda3 → #d6ae7b
 #bdc3c7 → #2c3e50
  #42275a → #734b6d
- 
+
 FFAFBD->C9FFBF */
 /* #000428 → #004e92 */
- 
+
 .error{
     color: red;
     padding: 3px;
     display: none;
+}
+.error2{
+    color: red;
+    padding: 3px;
 }
 input:invalid[focused="true"] {
     border:1px solid red;
