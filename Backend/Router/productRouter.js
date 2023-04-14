@@ -11,6 +11,6 @@ productRouter.route('/')
 .patch(updateProduct);
 
 productRouter.route('/graph')
-.get(graphData);
+.post(graphData);
 
 module.exports = productRouter;
