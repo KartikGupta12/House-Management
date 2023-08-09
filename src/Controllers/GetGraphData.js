@@ -1,6 +1,7 @@
+import url from "../url";
 const fetchData = async (token, name) => {
     try {
-        let response = await fetch("http://localhost:8000/product/graph", {
+        let response = await fetch(`${url}/product/graph`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

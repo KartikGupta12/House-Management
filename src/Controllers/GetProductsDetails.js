@@ -1,7 +1,8 @@
 // const token = localStorage.getItem('authToken');
+import url from "../url";
 const fetchData = async (token) => {
     try {
-        let response = await fetch("http://localhost:8000/product", {
+        let response = await fetch(`${url}/product`, {
             method: 'GET',
             headers: {authToken: token}
         });

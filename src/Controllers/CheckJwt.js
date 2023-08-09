@@ -1,9 +1,10 @@
-const uri = 'http://localhost:8000/user'
+import url from "../url";
+const uri = `${url}/user`;
 const check = async (jwt) => {
     try {
         let data = await fetch(uri, {
             method: 'GET',
-            headers: {authToken: jwt}
+            headers: { authToken: jwt }
         });
         const res = await data.json();
         return res['User'];

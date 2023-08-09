@@ -2,12 +2,12 @@ import React, {useContext, useState} from 'react';
 import LoginRegisterNavbar from "./LoginRegisterNavbar";
 import {Link, useNavigate} from "react-router-dom";
 import UserContext from "../context/UserContext";
-
+import url from "../url";
 function Login() {
     const context = useContext(UserContext);
     const history = useNavigate();
     const {showAlert, FlipLoginStats} = context;
-    const server = "http://localhost:8000/";
+    const server = url;
     const [data, setData] = useState({email: "", password: ""});
     const handleChange = (event) => {
         setData({
@@ -17,7 +17,7 @@ function Login() {
     };
     const handleSubmit = async () => {
         try {
-            let res = await fetch(server + 'user/login', {
+            let res = await fetch(server + '/user/login', {
                 method: "POST",
                 body: JSON.stringify({
                     email: data.email.toString().toLowerCase(),
@@ -28,7 +28,6 @@ function Login() {
                 }
             });
             let jsonData = await res.json();
-            console.log(jsonData);
             if (jsonData['authToken']) {
                 localStorage.setItem('authToken', jsonData['authToken']);
                 localStorage.setItem('name', jsonData['User']['name']);
@@ -39,7 +38,6 @@ function Login() {
                 showAlert('Invalid credentials', "danger");
             }
         } catch (err) {
-            console.log('login error: ' + err);
             showAlert('Internal server error', "danger");
         }
     };

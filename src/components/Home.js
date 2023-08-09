@@ -56,12 +56,12 @@ function Home() {
                     <span className="visually-hidden">Next</span>
                 </button>
             </div>
-            <div class="plate">
-                <p class="script"><span>Your One stop Solution to keep track of</span></p>
-                <p class="shadow text1">Grocery (inventory)</p>
+            <div className="plate">
+                <p className="script"><span>Your One stop Solution to keep track of</span></p>
+                <p className="shadow text1">Grocery (inventory)</p>
 
-                <p class="shadow text3">and Expenses</p>
-                <p class="script"><span> -> grocewise</span></p>
+                <p className="shadow text3">and Expenses</p>
+                <p className="script"><span> - grocewise</span></p>
             </div>
         </div>
     );

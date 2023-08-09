@@ -2,12 +2,12 @@ import React, {useContext, useState} from 'react';
 import LoginRegisterNavbar from "./LoginRegisterNavbar";
 import UserContext from "../context/UserContext";
 import {useNavigate} from "react-router-dom";
-
+import url from "../url";
 function Register() {
     const context = useContext(UserContext);
     const {showAlert} = context;
     const history = useNavigate();
-    const server = "http://localhost:8000/";
+    const server = url;
     const [data, setData] = useState({name: "", email: "", password: "", confirmPassword: ""});
     const handleChange = (event) => {
         setData({
@@ -17,7 +17,7 @@ function Register() {
     };
     const handleSubmit = async () => {
         try {
-            let res = await fetch(server + 'user/signup', {
+            let res = await fetch(server + '/user/signup', {
                 method: "POST",
                 body: JSON.stringify(data),
                 headers: {
@@ -25,7 +25,6 @@ function Register() {
                 }
             });
             const da = await res.json();
-            console.log(da)
             if (da['Error'] === "userModel validation failed: password: Password Length Must be Greater than or equal to 8")
                 showAlert('Password Length Must be Greater than or equal to 8', "danger");
             else if (da['Error'] === "userModel validation failed: confirmPassword: Confirm Password Does Not Match The Original Password")
