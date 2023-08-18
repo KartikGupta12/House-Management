@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import check from "../Controllers/CheckJwt";
 import UserContext from "../context/UserContext";
 import {getAllProducts} from "../Controllers/GetProductsDetails";
+import url from "../url";
 
 function EnterProducts() {
     const context = useContext(UserContext);
@@ -49,7 +50,7 @@ function EnterProducts() {
     const onDataSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:8000/product", {
+            const response = await fetch(`${url}/product`, {
                 method: "POST",
                 headers: {
                     'content-Type': 'application/json',

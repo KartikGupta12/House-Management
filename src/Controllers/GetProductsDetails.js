@@ -31,7 +31,7 @@ const makeitems = (unique_categories, details) => {
 }
 
 async function getAllProducts(token){
-    let response = await fetch("http://localhost:8000/getAllItems");
+    let response = await fetch(`${url}/getAllItems`);
     return await response.json();
 }
 

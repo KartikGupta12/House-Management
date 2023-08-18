@@ -4,6 +4,8 @@ import UserContext from "../context/UserContext";
 import check from "../Controllers/CheckJwt";
 import {GetProductsDetails} from "../Controllers/GetProductsDetails";
 import Spinner from "./Spinner";
+import url from "../url";
+
 function Inventory() {
     const context = useContext(UserContext);
     const { FlipLoginStats, setCompleteData, data, toogleWait, wait } = context;
@@ -44,7 +46,7 @@ function Inventory() {
     }
     const onclick = async () => {
         try {
-            const response = await fetch("http://localhost:8000/product", {
+            const response = await fetch(`${url}/product`, {
                 method: "PATCH",
                 headers: {
                     'content-Type': 'application/json',
