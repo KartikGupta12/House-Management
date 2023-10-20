@@ -82,7 +82,7 @@ function Inventory() {
             }
         }
         const regex=/^(0|[1-9][0-9]{0,9})$/;
-        if(newdetails.product_name==""||newdetails.new_quantity=="")setIssubmit(false);
+        if(newdetails.product_name===""||newdetails.new_quantity==="")setIssubmit(false);
         else if(!regex.test(newdetails.new_quantity))setIssubmit(false);
         else if(Number(qn)>Number(qo))setIssubmit(false);
         else{
@@ -97,9 +97,7 @@ function Inventory() {
     return (
         <>
             <div className='inventory'>
-
-
-
+                
                 <button ref={ref} type="button" className="btn btn-primary invisible" data-bs-toggle="modal"
                     data-bs-target="#exampleModal">
                     Launch demo modal
